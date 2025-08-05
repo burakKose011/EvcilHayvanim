@@ -14,6 +14,20 @@
 		FA2BF3A22E424739009D339C /* EvcilHayvanim.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FA2BF3A02E424739009D339C /* EvcilHayvanim.xcdatamodeld */; };
 		FA2BF3A42E42473B009D339C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA2BF3A32E42473B009D339C /* Assets.xcassets */; };
 		FA2BF3A72E42473B009D339C /* Base in Resources */ = {isa = PBXBuildFile; fileRef = FA2BF3A62E42473B009D339C /* Base */; };
+		FA4494A92E4250D300A50FE8 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4494A82E4250D300A50FE8 /* MainTabBarController.swift */; };
+		FA4494AB2E4250FD00A50FE8 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4494AA2E4250FD00A50FE8 /* DashboardViewController.swift */; };
+		FA4494AD2E42510B00A50FE8 /* PetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4494AC2E42510B00A50FE8 /* PetListViewController.swift */; };
+		FA4494AF2E42511700A50FE8 /* HealthRecordFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4494AE2E42511700A50FE8 /* HealthRecordFormViewController.swift */; };
+		FA4494B12E42512D00A50FE8 /* AppointmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4494B02E42512D00A50FE8 /* AppointmentsViewController.swift */; };
+		FA4494B32E42515000A50FE8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4494B22E42515000A50FE8 /* SettingsViewController.swift */; };
+		FA4494B52E42516900A50FE8 /* PetFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4494B42E42516900A50FE8 /* PetFormViewController.swift */; };
+		FA4494B72E42517300A50FE8 /* HealthRecordFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4494B62E42517300A50FE8 /* HealthRecordFormViewController.swift */; };
+		FA4494B92E42518500A50FE8 /* AppointmentFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4494B82E42518500A50FE8 /* AppointmentFormViewController.swift */; };
+		FA4494BB2E42519000A50FE8 /* PetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4494BA2E42519000A50FE8 /* PetDetailViewController.swift */; };
+		FA4494BD2E4251A300A50FE8 /* HealthRecordDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4494BC2E4251A300A50FE8 /* HealthRecordDetailViewController.swift */; };
+		FA4494BF2E4251AB00A50FE8 /* AppointmentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4494BE2E4251AB00A50FE8 /* AppointmentDetailViewController.swift */; };
+		FA4494C12E4255CB00A50FE8 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4494C02E4255CB00A50FE8 /* Models.swift */; };
+		FA4494C32E4257BF00A50FE8 /* HealthRecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4494C22E4257BF00A50FE8 /* HealthRecordsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +40,20 @@
 		FA2BF3A32E42473B009D339C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA2BF3A62E42473B009D339C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA2BF3A82E42473B009D339C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA4494A82E4250D300A50FE8 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		FA4494AA2E4250FD00A50FE8 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
+		FA4494AC2E42510B00A50FE8 /* PetListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetListViewController.swift; sourceTree = "<group>"; };
+		FA4494AE2E42511700A50FE8 /* HealthRecordFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthRecordFormViewController.swift; sourceTree = "<group>"; };
+		FA4494B02E42512D00A50FE8 /* AppointmentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentsViewController.swift; path = EvcilHayvanim/AppointmentsViewController.swift; sourceTree = "<group>"; };
+		FA4494B22E42515000A50FE8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = EvcilHayvanim/SettingsViewController.swift; sourceTree = "<group>"; };
+		FA4494B42E42516900A50FE8 /* PetFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PetFormViewController.swift; path = EvcilHayvanim/PetFormViewController.swift; sourceTree = "<group>"; };
+		FA4494B62E42517300A50FE8 /* HealthRecordFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HealthRecordFormViewController.swift; path = EvcilHayvanim/HealthRecordFormViewController.swift; sourceTree = "<group>"; };
+		FA4494B82E42518500A50FE8 /* AppointmentFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentFormViewController.swift; path = EvcilHayvanim/AppointmentFormViewController.swift; sourceTree = "<group>"; };
+		FA4494BA2E42519000A50FE8 /* PetDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PetDetailViewController.swift; path = EvcilHayvanim/PetDetailViewController.swift; sourceTree = "<group>"; };
+		FA4494BC2E4251A300A50FE8 /* HealthRecordDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HealthRecordDetailViewController.swift; path = EvcilHayvanim/HealthRecordDetailViewController.swift; sourceTree = "<group>"; };
+		FA4494BE2E4251AB00A50FE8 /* AppointmentDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentDetailViewController.swift; path = EvcilHayvanim/AppointmentDetailViewController.swift; sourceTree = "<group>"; };
+		FA4494C02E4255CB00A50FE8 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Models.swift; path = EvcilHayvanim/Models.swift; sourceTree = "<group>"; };
+		FA4494C22E4257BF00A50FE8 /* HealthRecordsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HealthRecordsViewController.swift; path = EvcilHayvanim/HealthRecordsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +71,16 @@
 			isa = PBXGroup;
 			children = (
 				FA2BF3962E424739009D339C /* EvcilHayvanim */,
+				FA4494B02E42512D00A50FE8 /* AppointmentsViewController.swift */,
+				FA4494B22E42515000A50FE8 /* SettingsViewController.swift */,
+				FA4494B42E42516900A50FE8 /* PetFormViewController.swift */,
+				FA4494B62E42517300A50FE8 /* HealthRecordFormViewController.swift */,
+				FA4494B82E42518500A50FE8 /* AppointmentFormViewController.swift */,
+				FA4494BA2E42519000A50FE8 /* PetDetailViewController.swift */,
+				FA4494BC2E4251A300A50FE8 /* HealthRecordDetailViewController.swift */,
+				FA4494BE2E4251AB00A50FE8 /* AppointmentDetailViewController.swift */,
+				FA4494C02E4255CB00A50FE8 /* Models.swift */,
+				FA4494C22E4257BF00A50FE8 /* HealthRecordsViewController.swift */,
 				FA2BF3952E424739009D339C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,6 +104,10 @@
 				FA2BF3A52E42473B009D339C /* LaunchScreen.storyboard */,
 				FA2BF3A82E42473B009D339C /* Info.plist */,
 				FA2BF3A02E424739009D339C /* EvcilHayvanim.xcdatamodeld */,
+				FA4494A82E4250D300A50FE8 /* MainTabBarController.swift */,
+				FA4494AA2E4250FD00A50FE8 /* DashboardViewController.swift */,
+				FA4494AC2E42510B00A50FE8 /* PetListViewController.swift */,
+				FA4494AE2E42511700A50FE8 /* HealthRecordFormViewController.swift */,
 			);
 			path = EvcilHayvanim;
 			sourceTree = "<group>";
@@ -141,10 +183,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA4494AD2E42510B00A50FE8 /* PetListViewController.swift in Sources */,
+				FA4494C12E4255CB00A50FE8 /* Models.swift in Sources */,
+				FA4494BF2E4251AB00A50FE8 /* AppointmentDetailViewController.swift in Sources */,
 				FA2BF39C2E424739009D339C /* ViewController.swift in Sources */,
+				FA4494B52E42516900A50FE8 /* PetFormViewController.swift in Sources */,
+				FA4494BD2E4251A300A50FE8 /* HealthRecordDetailViewController.swift in Sources */,
+				FA4494AB2E4250FD00A50FE8 /* DashboardViewController.swift in Sources */,
+				FA4494B32E42515000A50FE8 /* SettingsViewController.swift in Sources */,
 				FA2BF3982E424739009D339C /* AppDelegate.swift in Sources */,
+				FA4494B12E42512D00A50FE8 /* AppointmentsViewController.swift in Sources */,
+				FA4494A92E4250D300A50FE8 /* MainTabBarController.swift in Sources */,
+				FA4494C32E4257BF00A50FE8 /* HealthRecordsViewController.swift in Sources */,
 				FA2BF3A22E424739009D339C /* EvcilHayvanim.xcdatamodeld in Sources */,
 				FA2BF39A2E424739009D339C /* SceneDelegate.swift in Sources */,
+				FA4494AF2E42511700A50FE8 /* HealthRecordFormViewController.swift in Sources */,
+				FA4494BB2E42519000A50FE8 /* PetDetailViewController.swift in Sources */,
+				FA4494B72E42517300A50FE8 /* HealthRecordFormViewController.swift in Sources */,
+				FA4494B92E42518500A50FE8 /* AppointmentFormViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

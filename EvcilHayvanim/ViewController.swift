@@ -11,9 +11,15 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        setupMainTabBar()
     }
-
-
+    
+    private func setupMainTabBar() {
+        let mainTabBarController = MainTabBarController()
+        
+        // Present the tab bar controller
+        mainTabBarController.modalPresentationStyle = .fullScreen
+        present(mainTabBarController, animated: false)
+    }
 }
 
