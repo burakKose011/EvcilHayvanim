@@ -682,7 +682,7 @@ class PetDetailViewController: UIViewController {
         }
         
         // Load pet image if available
-        if let photoURL = pet.photoURL {
+        if pet.photoURL != nil {
             // Load image from URL
             petImageView.image = UIImage(named: "pet") // Placeholder
         } else {

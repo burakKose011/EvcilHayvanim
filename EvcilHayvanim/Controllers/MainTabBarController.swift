@@ -7,9 +7,9 @@
 
 import UIKit
 
-class MainTabBarController: UITabBarController {
+public class MainTabBarController: UITabBarController {
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()
         setupViewControllers()
@@ -17,10 +17,10 @@ class MainTabBarController: UITabBarController {
     }
     
     private func setupTabBar() {
-        // Modern tab bar styling
-        tabBar.tintColor = DesignSystem.Colors.primary
-        tabBar.unselectedItemTintColor = DesignSystem.Colors.textSecondary
-        tabBar.backgroundColor = DesignSystem.Colors.cardBackground
+        // Modern tab bar styling - basit renkler kullanarak
+        tabBar.tintColor = UIColor.systemOrange
+        tabBar.unselectedItemTintColor = UIColor.systemGray
+        tabBar.backgroundColor = UIColor.systemBackground
         
         // Better shadow
         tabBar.layer.shadowColor = UIColor.black.cgColor
@@ -39,17 +39,17 @@ class MainTabBarController: UITabBarController {
         if #available(iOS 15.0, *) {
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = DesignSystem.Colors.cardBackground
+            appearance.backgroundColor = UIColor.systemBackground
             
             // Normal state
             appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
-                .foregroundColor: DesignSystem.Colors.textSecondary,
+                .foregroundColor: UIColor.systemGray,
                 .font: UIFont.systemFont(ofSize: 10, weight: .medium)
             ]
             
             // Selected state
             appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
-                .foregroundColor: DesignSystem.Colors.primary,
+                .foregroundColor: UIColor.systemOrange,
                 .font: UIFont.systemFont(ofSize: 10, weight: .semibold)
             ]
             

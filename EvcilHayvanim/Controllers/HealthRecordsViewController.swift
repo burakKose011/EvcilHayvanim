@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HealthRecordsViewController: UIViewController {
+public class HealthRecordsViewController: UIViewController {
     
     // MARK: - UI Elements
     private let searchController = UISearchController(searchResultsController: nil)
@@ -56,7 +56,7 @@ class HealthRecordsViewController: UIViewController {
     }
     
     // MARK: - Lifecycle
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
@@ -64,7 +64,7 @@ class HealthRecordsViewController: UIViewController {
         setupAnimations()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadHealthRecords()
     }
@@ -131,7 +131,17 @@ class HealthRecordsViewController: UIViewController {
         // Current filter button
         updateCurrentFilterButton()
         currentFilterButton.contentHorizontalAlignment = .left
-        currentFilterButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+        
+        // iOS 15+ uyumlu padding ayarı
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.plain()
+            config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0)
+            currentFilterButton.configuration = config
+        } else {
+            // iOS 15 öncesi için eski yöntem
+            currentFilterButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+        }
+        
         currentFilterButton.addTarget(self, action: #selector(showFilterMenu), for: .touchUpInside)
         
         // Dropdown arrow button
@@ -455,11 +465,11 @@ class HealthRecordsViewController: UIViewController {
 
 // MARK: - UICollectionViewDataSource
 extension HealthRecordsViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return filteredRecords.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ModernHealthRecordCell", for: indexPath) as! ModernHealthRecordCell
         let record = filteredRecords[indexPath.item]
         cell.configure(with: record)
@@ -479,7 +489,7 @@ extension HealthRecordsViewController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegate
 extension HealthRecordsViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let record = filteredRecords[indexPath.item]
         let recordDetailVC = HealthRecordDetailViewController()
         recordDetailVC.healthRecord = record
@@ -493,7 +503,7 @@ extension HealthRecordsViewController: UICollectionViewDelegate {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension HealthRecordsViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.frame.width - 48) // 16 + 16 + 16 (margins + spacing)
         return CGSize(width: width, height: 140)
     }
@@ -501,7 +511,7 @@ extension HealthRecordsViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - UISearchResultsUpdating
 extension HealthRecordsViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
+    public func updateSearchResults(for searchController: UISearchController) {
         applyFilters()
     }
 }

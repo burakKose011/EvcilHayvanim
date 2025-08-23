@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AppointmentsViewController: UIViewController {
+public class AppointmentsViewController: UIViewController {
     
     // MARK: - UI Elements
     private let scrollView = UIScrollView()
@@ -74,7 +74,7 @@ class AppointmentsViewController: UIViewController {
     }
     
     // MARK: - Lifecycle
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
@@ -82,7 +82,7 @@ class AppointmentsViewController: UIViewController {
         setupAnimations()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadAppointments()
         updateStats()
@@ -547,22 +547,22 @@ class AppointmentsViewController: UIViewController {
 
 // MARK: - UITableViewDataSource & UITableViewDelegate
 extension AppointmentsViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredAppointments.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AppointmentCell", for: indexPath) as! AppointmentTableViewCell
         let appointment = filteredAppointments[indexPath.row]
         cell.configure(with: appointment)
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
         // Add haptic feedback

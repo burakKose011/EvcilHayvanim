@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DashboardViewController: UIViewController {
+public class DashboardViewController: UIViewController {
     
     // MARK: - UI Elements
     private let scrollView = UIScrollView()
@@ -51,12 +51,13 @@ class DashboardViewController: UIViewController {
     private let addAppointmentActionView = UIView()
     
     // MARK: - Properties
+    private var pets: [PetModel] = []
     private var upcomingAppointments: [AppointmentModel] = []
     private var reminders: [ReminderModel] = []
     private var recentHealthRecords: [HealthRecordModel] = []
     
     // MARK: - Lifecycle
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
@@ -64,7 +65,7 @@ class DashboardViewController: UIViewController {
         setupAnimations()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         refreshDashboard()
         updateTimeBasedContent()
@@ -783,16 +784,30 @@ class DashboardViewController: UIViewController {
         subtitleLabel.text = dateFormatter.string(from: Date())
     }
     
+    private func updateStatistics() {
+        // Update pets count
+        petsStatCard.subviews.forEach { $0.removeFromSuperview() }
+        createModernStatCard(petsStatCard, title: "Dostlarım", count: "\(pets.count)", icon: "pawprint.fill", color: UIColor(red: 0.2, green: 0.6, blue: 1.0, alpha: 1.0), subtitle: "Evcil Hayvan")
+        
+        // Update appointments count
+        appointmentsStatCard.subviews.forEach { $0.removeFromSuperview() }
+        createModernStatCard(appointmentsStatCard, title: "Randevular", count: "\(upcomingAppointments.count)", icon: "calendar", color: UIColor(red: 0.9, green: 0.4, blue: 0.2, alpha: 1.0), subtitle: "Yaklaşan")
+        
+        // Update health records count
+        healthStatCard.subviews.forEach { $0.removeFromSuperview() }
+        createModernStatCard(healthStatCard, title: "Sağlık", count: "\(recentHealthRecords.count)", icon: "heart.fill", color: UIColor(red: 0.2, green: 0.8, blue: 0.4, alpha: 1.0), subtitle: "Kayıt")
+    }
+    
 
 }
 
 // MARK: - UITableViewDataSource & UITableViewDelegate
 extension DashboardViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return min(recentHealthRecords.count, 3) // Show max 3 recent activities
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
         
         if indexPath.row < recentHealthRecords.count {
@@ -830,7 +845,7 @@ extension DashboardViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
     }
 } 

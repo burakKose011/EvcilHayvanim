@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PetListViewController: UIViewController {
+public class PetListViewController: UIViewController {
     
     // MARK: - UI Elements
     private let searchController = UISearchController(searchResultsController: nil)
@@ -24,14 +24,15 @@ class PetListViewController: UIViewController {
     private var isSearching: Bool = false
     
     // MARK: - Lifecycle
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
         loadPets()
+        setupAnimations()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadPets()
         
@@ -199,90 +200,101 @@ class PetListViewController: UIViewController {
         let navController = UINavigationController(rootViewController: petFormVC)
         present(navController, animated: true)
     }
+    
+    // MARK: - Helper Methods
+    private func setupAnimations() {
+        // Add initial animations for UI elements
+        addButton.alpha = 0
+        addButton.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        
+        UIView.animate(withDuration: 0.6, delay: 0.3, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: [], animations: {
+            self.addButton.alpha = 1
+            self.addButton.transform = .identity
+        })
+    }
+    
+    private func deletePet(at indexPath: IndexPath) {
+        let pet = filteredPets[indexPath.row]
+        
+        let alert = UIAlertController(title: "Evcil Hayvanı Sil", message: "\(pet.name) adlı evcil hayvanı silmek istediğinizden emin misiniz?", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "İptal", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Sil", style: .destructive) { [weak self] _ in
+            DataManager.shared.deletePet(pet)
+            self?.loadPets()
+        })
+        
+        present(alert, animated: true)
+    }
+    
+    private func editPet(at indexPath: IndexPath) {
+        let pet = filteredPets[indexPath.row]
+        let petFormVC = PetFormViewController()
+        petFormVC.pet = pet
+        let navController = UINavigationController(rootViewController: petFormVC)
+        present(navController, animated: true)
+    }
 }
 
 // MARK: - UITableViewDataSource
 extension PetListViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredPets.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PetCell", for: indexPath) as! PetTableViewCell
         let pet = filteredPets[indexPath.row]
         cell.configure(with: pet)
+        
+        // Add cute slide-in animation
+        CuteAnimations.slideInFromBottom(for: cell, delay: TimeInterval(indexPath.row) * 0.1)
+        
         return cell
     }
 }
 
 // MARK: - UITableViewDelegate
 extension PetListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        // Add haptic feedback
-        let impactFeedback = UIImpactFeedbackGenerator(style: .light)
-        impactFeedback.impactOccurred()
-        
-        // Add cute bounce animation to selected cell
-        if let cell = tableView.cellForRow(at: indexPath) {
-            CuteAnimations.bounceAnimation(for: cell)
-        }
         
         let pet = filteredPets[indexPath.row]
         let petDetailVC = PetDetailViewController()
         petDetailVC.pet = pet
+        
+        // Add cute bounce animation
+        if let cell = tableView.cellForRow(at: indexPath) {
+            CuteAnimations.bounceAnimation(for: cell)
+        }
+        
         navigationController?.pushViewController(petDetailVC, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
     }
     
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let editAction = UIContextualAction(style: .normal, title: "Düzenle") { [weak self] (action, view, completion) in
-            let pet = self?.filteredPets[indexPath.row]
-            let petFormVC = PetFormViewController()
-            petFormVC.pet = pet
-            let navController = UINavigationController(rootViewController: petFormVC)
-            self?.present(navController, animated: true)
-            completion(true)
-        }
-        editAction.backgroundColor = UIColor(red: 0.2, green: 0.6, blue: 1.0, alpha: 1.0)
-        editAction.image = UIImage(systemName: "pencil")
-        
+    public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Sil") { [weak self] (action, view, completion) in
-            self?.showDeleteAlert(for: indexPath)
+            self?.deletePet(at: indexPath)
             completion(true)
         }
-        deleteAction.image = UIImage(systemName: "trash")
+        deleteAction.backgroundColor = UIColor.systemRed
+        
+        let editAction = UIContextualAction(style: .normal, title: "Düzenle") { [weak self] (action, view, completion) in
+            self?.editPet(at: indexPath)
+            completion(true)
+        }
+        editAction.backgroundColor = UIColor.systemBlue
         
         return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
-    }
-    
-    private func showDeleteAlert(for indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Evcil Hayvanı Sil", message: "Bu evcil hayvanı silmek istediğinizden emin misiniz?", preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "İptal", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Sil", style: .destructive) { [weak self] _ in
-            let pet = self?.filteredPets[indexPath.row]
-            self?.deletePet(pet)
-        })
-        
-        present(alert, animated: true)
-    }
-    
-    private func deletePet(_ pet: PetModel?) {
-        guard let pet = pet else { return }
-        
-        DataManager.shared.deletePet(pet)
-        loadPets()
     }
 }
 
 // MARK: - UISearchResultsUpdating
 extension PetListViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
+    public func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else { return }
         filterPets(with: searchText)
     }

@@ -1,0 +1,488 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FAB17AB62E5A0E5E00140D3F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AB52E5A0E5E00140D3F /* AppDelegate.swift */; };
+		FAB17AB82E5A0E5E00140D3F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AB72E5A0E5E00140D3F /* SceneDelegate.swift */; };
+		FAB17ADA2E5A0E7800140D3F /* AppointmentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17ACC2E5A0E7800140D3F /* AppointmentDetailViewController.swift */; };
+		FAB17ADB2E5A0E7800140D3F /* AppointmentFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17ACD2E5A0E7800140D3F /* AppointmentFormViewController.swift */; };
+		FAB17ADC2E5A0E7800140D3F /* AppointmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17ACE2E5A0E7800140D3F /* AppointmentsViewController.swift */; };
+		FAB17ADD2E5A0E7800140D3F /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17ACF2E5A0E7800140D3F /* DashboardViewController.swift */; };
+		FAB17ADE2E5A0E7800140D3F /* HealthRecordDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AD02E5A0E7800140D3F /* HealthRecordDetailViewController.swift */; };
+		FAB17ADF2E5A0E7800140D3F /* HealthRecordFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AD12E5A0E7800140D3F /* HealthRecordFormViewController.swift */; };
+		FAB17AE02E5A0E7800140D3F /* HealthRecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AD22E5A0E7800140D3F /* HealthRecordsViewController.swift */; };
+		FAB17AE12E5A0E7800140D3F /* PetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AD32E5A0E7800140D3F /* PetDetailViewController.swift */; };
+		FAB17AE22E5A0E7800140D3F /* PetFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AD42E5A0E7800140D3F /* PetFormViewController.swift */; };
+		FAB17AE32E5A0E7800140D3F /* PetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AD52E5A0E7800140D3F /* PetListViewController.swift */; };
+		FAB17AE42E5A0E7800140D3F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AD62E5A0E7800140D3F /* SettingsViewController.swift */; };
+		FAB17AE52E5A0E7800140D3F /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AD72E5A0E7800140D3F /* SplashViewController.swift */; };
+		FAB17AE62E5A0E7800140D3F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AD82E5A0E7800140D3F /* ViewController.swift */; };
+		FAB17AE92E5A0E8900140D3F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AE72E5A0E8900140D3F /* Models.swift */; };
+		FAB17AEF2E5A0E9800140D3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAB17AEA2E5A0E9800140D3F /* Assets.xcassets */; };
+		FAB17AF02E5A0E9800140D3F /* pet.png in Resources */ = {isa = PBXBuildFile; fileRef = FAB17AEB2E5A0E9800140D3F /* pet.png */; };
+		FAB17AF12E5A0E9800140D3F /* pett.png in Resources */ = {isa = PBXBuildFile; fileRef = FAB17AEC2E5A0E9800140D3F /* pett.png */; };
+		FAB17AF22E5A0E9800140D3F /* petYanimda.png in Resources */ = {isa = PBXBuildFile; fileRef = FAB17AED2E5A0E9800140D3F /* petYanimda.png */; };
+		FAB17AF82E5A0EB300140D3F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAB17AF42E5A0EB300140D3F /* LaunchScreen.storyboard */; };
+		FAB17AF92E5A0EB300140D3F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAB17AF62E5A0EB300140D3F /* Main.storyboard */; };
+		FAB17AFC2E5A10F900140D3F /* EvcilHayvanim.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AFA2E5A10F900140D3F /* EvcilHayvanim.xcdatamodeld */; };
+		FAB17AFE2E5A12D400140D3F /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AFD2E5A12D400140D3F /* MainTabBarController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		FAB17AB22E5A0E5E00140D3F /* EvcilHayvanim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EvcilHayvanim.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAB17AB52E5A0E5E00140D3F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FAB17AB72E5A0E5E00140D3F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		FAB17AC62E5A0E6000140D3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FAB17ACC2E5A0E7800140D3F /* AppointmentDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentDetailViewController.swift; sourceTree = "<group>"; };
+		FAB17ACD2E5A0E7800140D3F /* AppointmentFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentFormViewController.swift; sourceTree = "<group>"; };
+		FAB17ACE2E5A0E7800140D3F /* AppointmentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppointmentsViewController.swift; sourceTree = "<group>"; };
+		FAB17ACF2E5A0E7800140D3F /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
+		FAB17AD02E5A0E7800140D3F /* HealthRecordDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthRecordDetailViewController.swift; sourceTree = "<group>"; };
+		FAB17AD12E5A0E7800140D3F /* HealthRecordFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthRecordFormViewController.swift; sourceTree = "<group>"; };
+		FAB17AD22E5A0E7800140D3F /* HealthRecordsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthRecordsViewController.swift; sourceTree = "<group>"; };
+		FAB17AD32E5A0E7800140D3F /* PetDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetDetailViewController.swift; sourceTree = "<group>"; };
+		FAB17AD42E5A0E7800140D3F /* PetFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetFormViewController.swift; sourceTree = "<group>"; };
+		FAB17AD52E5A0E7800140D3F /* PetListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetListViewController.swift; sourceTree = "<group>"; };
+		FAB17AD62E5A0E7800140D3F /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		FAB17AD72E5A0E7800140D3F /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		FAB17AD82E5A0E7800140D3F /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FAB17AE72E5A0E8900140D3F /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		FAB17AEA2E5A0E9800140D3F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FAB17AEB2E5A0E9800140D3F /* pet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pet.png; sourceTree = "<group>"; };
+		FAB17AEC2E5A0E9800140D3F /* pett.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pett.png; sourceTree = "<group>"; };
+		FAB17AED2E5A0E9800140D3F /* petYanimda.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = petYanimda.png; sourceTree = "<group>"; };
+		FAB17AF32E5A0EB300140D3F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FAB17AF52E5A0EB300140D3F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FAB17AFB2E5A10F900140D3F /* EvcilHayvanim.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EvcilHayvanim.xcdatamodel; sourceTree = "<group>"; };
+		FAB17AFD2E5A12D400140D3F /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FAB17AAF2E5A0E5E00140D3F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FAB17AA92E5A0E5E00140D3F = {
+			isa = PBXGroup;
+			children = (
+				FAB17AB42E5A0E5E00140D3F /* EvcilHayvanim */,
+				FAB17AB32E5A0E5E00140D3F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FAB17AB32E5A0E5E00140D3F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FAB17AB22E5A0E5E00140D3F /* EvcilHayvanim.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FAB17AB42E5A0E5E00140D3F /* EvcilHayvanim */ = {
+			isa = PBXGroup;
+			children = (
+				FAB17AFA2E5A10F900140D3F /* EvcilHayvanim.xcdatamodeld */,
+				FAB17AF72E5A0EB300140D3F /* Views */,
+				FAB17AEE2E5A0E9800140D3F /* Resources */,
+				FAB17AE82E5A0E8900140D3F /* Models */,
+				FAB17AD92E5A0E7800140D3F /* Controllers */,
+				FAB17AB52E5A0E5E00140D3F /* AppDelegate.swift */,
+				FAB17AB72E5A0E5E00140D3F /* SceneDelegate.swift */,
+				FAB17AC62E5A0E6000140D3F /* Info.plist */,
+			);
+			path = EvcilHayvanim;
+			sourceTree = "<group>";
+		};
+		FAB17AD92E5A0E7800140D3F /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				FAB17ACC2E5A0E7800140D3F /* AppointmentDetailViewController.swift */,
+				FAB17ACD2E5A0E7800140D3F /* AppointmentFormViewController.swift */,
+				FAB17ACE2E5A0E7800140D3F /* AppointmentsViewController.swift */,
+				FAB17ACF2E5A0E7800140D3F /* DashboardViewController.swift */,
+				FAB17AD02E5A0E7800140D3F /* HealthRecordDetailViewController.swift */,
+				FAB17AD12E5A0E7800140D3F /* HealthRecordFormViewController.swift */,
+				FAB17AD22E5A0E7800140D3F /* HealthRecordsViewController.swift */,
+				FAB17AFD2E5A12D400140D3F /* MainTabBarController.swift */,
+				FAB17AD32E5A0E7800140D3F /* PetDetailViewController.swift */,
+				FAB17AD42E5A0E7800140D3F /* PetFormViewController.swift */,
+				FAB17AD52E5A0E7800140D3F /* PetListViewController.swift */,
+				FAB17AD62E5A0E7800140D3F /* SettingsViewController.swift */,
+				FAB17AD72E5A0E7800140D3F /* SplashViewController.swift */,
+				FAB17AD82E5A0E7800140D3F /* ViewController.swift */,
+			);
+			name = Controllers;
+			path = ../../Controllers;
+			sourceTree = "<group>";
+		};
+		FAB17AE82E5A0E8900140D3F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FAB17AE72E5A0E8900140D3F /* Models.swift */,
+			);
+			name = Models;
+			path = ../../Models;
+			sourceTree = "<group>";
+		};
+		FAB17AEE2E5A0E9800140D3F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FAB17AEA2E5A0E9800140D3F /* Assets.xcassets */,
+				FAB17AEB2E5A0E9800140D3F /* pet.png */,
+				FAB17AEC2E5A0E9800140D3F /* pett.png */,
+				FAB17AED2E5A0E9800140D3F /* petYanimda.png */,
+			);
+			name = Resources;
+			path = ../../Resources;
+			sourceTree = "<group>";
+		};
+		FAB17AF72E5A0EB300140D3F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FAB17AF42E5A0EB300140D3F /* LaunchScreen.storyboard */,
+				FAB17AF62E5A0EB300140D3F /* Main.storyboard */,
+			);
+			name = Views;
+			path = ../../Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FAB17AB12E5A0E5E00140D3F /* EvcilHayvanim */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAB17AC92E5A0E6000140D3F /* Build configuration list for PBXNativeTarget "EvcilHayvanim" */;
+			buildPhases = (
+				FAB17AAE2E5A0E5E00140D3F /* Sources */,
+				FAB17AAF2E5A0E5E00140D3F /* Frameworks */,
+				FAB17AB02E5A0E5E00140D3F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EvcilHayvanim;
+			productName = EvcilHayvanim;
+			productReference = FAB17AB22E5A0E5E00140D3F /* EvcilHayvanim.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FAB17AAA2E5A0E5E00140D3F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					FAB17AB12E5A0E5E00140D3F = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = FAB17AAD2E5A0E5E00140D3F /* Build configuration list for PBXProject "EvcilHayvanim" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FAB17AA92E5A0E5E00140D3F;
+			productRefGroup = FAB17AB32E5A0E5E00140D3F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FAB17AB12E5A0E5E00140D3F /* EvcilHayvanim */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FAB17AB02E5A0E5E00140D3F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAB17AF02E5A0E9800140D3F /* pet.png in Resources */,
+				FAB17AF82E5A0EB300140D3F /* LaunchScreen.storyboard in Resources */,
+				FAB17AF22E5A0E9800140D3F /* petYanimda.png in Resources */,
+				FAB17AF12E5A0E9800140D3F /* pett.png in Resources */,
+				FAB17AF92E5A0EB300140D3F /* Main.storyboard in Resources */,
+				FAB17AEF2E5A0E9800140D3F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FAB17AAE2E5A0E5E00140D3F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAB17AE32E5A0E7800140D3F /* PetListViewController.swift in Sources */,
+				FAB17ADE2E5A0E7800140D3F /* HealthRecordDetailViewController.swift in Sources */,
+				FAB17AFE2E5A12D400140D3F /* MainTabBarController.swift in Sources */,
+				FAB17AB62E5A0E5E00140D3F /* AppDelegate.swift in Sources */,
+				FAB17AE22E5A0E7800140D3F /* PetFormViewController.swift in Sources */,
+				FAB17AE12E5A0E7800140D3F /* PetDetailViewController.swift in Sources */,
+				FAB17ADC2E5A0E7800140D3F /* AppointmentsViewController.swift in Sources */,
+				FAB17AE42E5A0E7800140D3F /* SettingsViewController.swift in Sources */,
+				FAB17AE62E5A0E7800140D3F /* ViewController.swift in Sources */,
+				FAB17ADA2E5A0E7800140D3F /* AppointmentDetailViewController.swift in Sources */,
+				FAB17AE02E5A0E7800140D3F /* HealthRecordsViewController.swift in Sources */,
+				FAB17ADB2E5A0E7800140D3F /* AppointmentFormViewController.swift in Sources */,
+				FAB17ADF2E5A0E7800140D3F /* HealthRecordFormViewController.swift in Sources */,
+				FAB17AB82E5A0E5E00140D3F /* SceneDelegate.swift in Sources */,
+				FAB17AFC2E5A10F900140D3F /* EvcilHayvanim.xcdatamodeld in Sources */,
+				FAB17AE92E5A0E8900140D3F /* Models.swift in Sources */,
+				FAB17ADD2E5A0E7800140D3F /* DashboardViewController.swift in Sources */,
+				FAB17AE52E5A0E7800140D3F /* SplashViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		FAB17AF42E5A0EB300140D3F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAB17AF32E5A0EB300140D3F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		FAB17AF62E5A0EB300140D3F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAB17AF52E5A0EB300140D3F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FAB17AC72E5A0E6000140D3F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		FAB17AC82E5A0E6000140D3F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FAB17ACA2E5A0E6000140D3F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EvcilHayvanim/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.EvcilHayvanim;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FAB17ACB2E5A0E6000140D3F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EvcilHayvanim/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.EvcilHayvanim;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FAB17AAD2E5A0E5E00140D3F /* Build configuration list for PBXProject "EvcilHayvanim" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAB17AC72E5A0E6000140D3F /* Debug */,
+				FAB17AC82E5A0E6000140D3F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FAB17AC92E5A0E6000140D3F /* Build configuration list for PBXNativeTarget "EvcilHayvanim" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAB17ACA2E5A0E6000140D3F /* Debug */,
+				FAB17ACB2E5A0E6000140D3F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		FAB17AFA2E5A10F900140D3F /* EvcilHayvanim.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				FAB17AFB2E5A10F900140D3F /* EvcilHayvanim.xcdatamodel */,
+			);
+			currentVersion = FAB17AFB2E5A10F900140D3F /* EvcilHayvanim.xcdatamodel */;
+			name = EvcilHayvanim.xcdatamodeld;
+			path = /Users/macbook/Desktop/EvcilHayvanim/EvcilHayvanim/EvcilHayvanim.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = FAB17AAA2E5A0E5E00140D3F /* Project object */;
+}

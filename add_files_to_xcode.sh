@@ -1,34 +1,32 @@
 #!/bin/bash
 
-# Xcode projesine dosyaları eklemek için script
 echo "Xcode projesine dosyalar ekleniyor..."
 
-# Proje dosyasının yolu
-PROJECT_FILE="EvcilHayvanim.xcodeproj/project.pbxproj"
-
-# Eklenecek dosyalar
-FILES=(
-    "EvcilHayvanim/Models.swift"
-    "EvcilHayvanim/MainTabBarController.swift"
-    "EvcilHayvanim/DashboardViewController.swift"
-    "EvcilHayvanim/PetListViewController.swift"
-    "EvcilHayvanim/HealthRecordsViewController.swift"
-    "EvcilHayvanim/AppointmentsViewController.swift"
-    "EvcilHayvanim/SettingsViewController.swift"
-    "EvcilHayvanim/PetFormViewController.swift"
-    "EvcilHayvanim/HealthRecordFormViewController.swift"
-    "EvcilHayvanim/AppointmentFormViewController.swift"
-    "EvcilHayvanim/PetDetailViewController.swift"
-    "EvcilHayvanim/HealthRecordDetailViewController.swift"
-    "EvcilHayvanim/AppointmentDetailViewController.swift"
+# Dosya listesi - güncellenmiş yollar
+files=(
+    "EvcilHayvanim/Models/Models.swift"
+    "EvcilHayvanim/Controllers/MainTabBarController.swift"
+    "EvcilHayvanim/Controllers/DashboardViewController.swift"
+    "EvcilHayvanim/Controllers/PetListViewController.swift"
+    "EvcilHayvanim/Controllers/HealthRecordsViewController.swift"
+    "EvcilHayvanim/Controllers/AppointmentsViewController.swift"
+    "EvcilHayvanim/Controllers/SettingsViewController.swift"
+    "EvcilHayvanim/Controllers/PetFormViewController.swift"
+    "EvcilHayvanim/Controllers/HealthRecordFormViewController.swift"
+    "EvcilHayvanim/Controllers/AppointmentFormViewController.swift"
+    "EvcilHayvanim/Controllers/PetDetailViewController.swift"
+    "EvcilHayvanim/Controllers/HealthRecordDetailViewController.swift"
+    "EvcilHayvanim/Controllers/AppointmentDetailViewController.swift"
+    "EvcilHayvanim/Controllers/SplashViewController.swift"
+    "EvcilHayvanim/Controllers/ViewController.swift"
 )
 
-echo "Toplam ${#FILES[@]} dosya eklenecek..."
+echo "Toplam ${#files[@]} dosya eklenecek..."
 
-# Her dosya için kontrol et
-for file in "${FILES[@]}"; do
+# Her dosyayı kontrol et
+for file in "${files[@]}"; do
     if [ -f "$file" ]; then
-        echo "✅ $file mevcut"
+        echo "✅ $file bulundu"
     else
         echo "❌ $file bulunamadı!"
     fi

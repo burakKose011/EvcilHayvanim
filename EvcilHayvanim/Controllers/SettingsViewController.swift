@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
+public class SettingsViewController: UIViewController {
     
     // MARK: - UI Elements
     private let scrollView = UIScrollView()
@@ -52,10 +52,11 @@ class SettingsViewController: UIViewController {
     ]
     
     // MARK: - Lifecycle
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
+        setupAnimations()
     }
     
     // MARK: - UI Setup
@@ -458,9 +459,9 @@ class SettingsViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func editProfileTapped() {
-        let alert = UIAlertController(title: "Profil Düzenle", message: "Bu özellik yakında eklenecek", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Tamam", style: .default))
-        present(alert, animated: true)
+        // TODO: Implement edit profile functionality
+        let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+        impactFeedback.impactOccurred()
     }
     
     @objc private func settingItemTapped(_ gesture: UITapGestureRecognizer) {
@@ -478,5 +479,17 @@ class SettingsViewController: UIViewController {
         let alert = UIAlertController(title: "Geliştiriliyor", message: "Bu özellik yakında eklenecek", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Tamam", style: .default))
         present(alert, animated: true)
+    }
+    
+    // MARK: - Helper Methods
+    private func setupAnimations() {
+        // Add initial animations for UI elements
+        profileImageView.alpha = 0
+        profileImageView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        
+        UIView.animate(withDuration: 0.6, delay: 0.2, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: [], animations: {
+            self.profileImageView.alpha = 1
+            self.profileImageView.transform = .identity
+        })
     }
 } 
