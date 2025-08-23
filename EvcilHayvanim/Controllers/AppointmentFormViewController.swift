@@ -1,5 +1,5 @@
 //
-//  HealthRecordFormViewController.swift
+//  AppointmentFormViewController.swift
 //  EvcilHayvanim
 //
 //  Created by macbook on 5.08.2025.
@@ -7,15 +7,15 @@
 
 import UIKit
 
-class HealthRecordFormViewController: UIViewController {
+class AppointmentFormViewController: UIViewController {
     
     // MARK: - UI Elements
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
-    private let typePickerView = UIPickerView()
-    private let descriptionTextView = UITextView()
+    private let petPickerView = UIPickerView()
     private let veterinarianTextField = UITextField()
+    private let reasonTextField = UITextField()
     private let datePicker = UIDatePicker()
     private let notesTextView = UITextView()
     
@@ -23,22 +23,24 @@ class HealthRecordFormViewController: UIViewController {
     private let cancelButton = UIButton()
     
     // MARK: - Properties
-    var healthRecord: HealthRecord? // For editing
-    var pet: Pet? // For new record
-    private var selectedType: HealthRecordType = .checkup
+    var appointment: AppointmentModel? // For editing
+    var pet: PetModel? // For new appointment
+    private var pets: [PetModel] = []
+    private var selectedPet: PetModel?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
+        loadPets()
         setupData()
     }
     
     // MARK: - UI Setup
     private func setupUI() {
-        view.backgroundColor = .systemBackground
-        title = healthRecord == nil ? "Yeni Sağlık Kaydı" : "Sağlık Kaydı Düzenle"
+        view.backgroundColor = DesignSystem.Colors.background
+        title = appointment == nil ? "Yeni Randevu" : "Randevu Düzenle"
         
         setupNavigationBar()
         setupScrollView()
@@ -65,45 +67,46 @@ class HealthRecordFormViewController: UIViewController {
     }
     
     private func setupFormFields() {
-        typePickerView.translatesAutoresizingMaskIntoConstraints = false
-        descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
+        petPickerView.translatesAutoresizingMaskIntoConstraints = false
         veterinarianTextField.translatesAutoresizingMaskIntoConstraints = false
+        reasonTextField.translatesAutoresizingMaskIntoConstraints = false
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         notesTextView.translatesAutoresizingMaskIntoConstraints = false
         
-        // Type Picker
-        typePickerView.delegate = self
-        typePickerView.dataSource = self
+        // Pet Picker
+        petPickerView.delegate = self
+        petPickerView.dataSource = self
         
-        // Description TextView
-        descriptionTextView.font = UIFont.systemFont(ofSize: 16)
-        descriptionTextView.layer.borderWidth = 1
-        descriptionTextView.layer.borderColor = UIColor.systemGray4.cgColor
-        descriptionTextView.layer.cornerRadius = 8
-        descriptionTextView.text = "Sağlık kaydı açıklaması..."
-        descriptionTextView.textColor = .placeholderText
-        
-        // Veterinarian Field
-        veterinarianTextField.placeholder = "Veteriner hekim"
+        // Veterinarian Field with cute styling
+        veterinarianTextField.placeholder = "👨‍⚕️ Veteriner hekim"
         veterinarianTextField.borderStyle = .roundedRect
-        veterinarianTextField.font = UIFont.systemFont(ofSize: 16)
+        veterinarianTextField.font = DesignSystem.Typography.callout
+        veterinarianTextField.backgroundColor = DesignSystem.Colors.cardBackground
         
-        // Date Picker
+        // Reason Field with cute styling
+        reasonTextField.placeholder = "📝 Randevu sebebi"
+        reasonTextField.borderStyle = .roundedRect
+        reasonTextField.font = DesignSystem.Typography.callout
+        reasonTextField.backgroundColor = DesignSystem.Colors.cardBackground
+        
+        // Date Picker with cute styling
         datePicker.datePickerMode = .dateAndTime
         datePicker.preferredDatePickerStyle = .compact
-        datePicker.maximumDate = Date()
+        datePicker.minimumDate = Date()
+        datePicker.tintColor = DesignSystem.Colors.primary
         
-        // Notes TextView
-        notesTextView.font = UIFont.systemFont(ofSize: 16)
-        notesTextView.layer.borderWidth = 1
-        notesTextView.layer.borderColor = UIColor.systemGray4.cgColor
-        notesTextView.layer.cornerRadius = 8
-        notesTextView.text = "Notlar (opsiyonel)..."
-        notesTextView.textColor = .placeholderText
+        // Notes TextView with cute styling
+        notesTextView.font = DesignSystem.Typography.callout
+        notesTextView.layer.borderWidth = 2
+        notesTextView.layer.borderColor = DesignSystem.Colors.primaryLight.cgColor
+        notesTextView.layer.cornerRadius = DesignSystem.CornerRadius.medium
+        notesTextView.text = "📝 Notlar (opsiyonel)..."
+        notesTextView.textColor = DesignSystem.Colors.textSecondary
+        notesTextView.backgroundColor = DesignSystem.Colors.cardBackground
         
-        contentView.addSubview(typePickerView)
-        contentView.addSubview(descriptionTextView)
+        contentView.addSubview(petPickerView)
         contentView.addSubview(veterinarianTextField)
+        contentView.addSubview(reasonTextField)
         contentView.addSubview(datePicker)
         contentView.addSubview(notesTextView)
     }
@@ -112,18 +115,15 @@ class HealthRecordFormViewController: UIViewController {
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         
-        saveButton.setTitle("Kaydet", for: .normal)
-        saveButton.setTitleColor(.white, for: .normal)
-        saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        saveButton.backgroundColor = .systemBlue
-        saveButton.layer.cornerRadius = 12
+        saveButton.setTitle("💾 Kaydet", for: .normal)
+        saveButton.applyPrimaryStyle()
         saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
         
-        cancelButton.setTitle("İptal", for: .normal)
-        cancelButton.setTitleColor(.systemRed, for: .normal)
-        cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        cancelButton.backgroundColor = .systemRed.withAlphaComponent(0.1)
-        cancelButton.layer.cornerRadius = 12
+        cancelButton.setTitle("❌ İptal", for: .normal)
+        cancelButton.setTitleColor(DesignSystem.Colors.error, for: .normal)
+        cancelButton.titleLabel?.font = DesignSystem.Typography.buttonTitle
+        cancelButton.backgroundColor = DesignSystem.Colors.error.withAlphaComponent(0.1)
+        cancelButton.layer.cornerRadius = DesignSystem.CornerRadius.medium
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         
         contentView.addSubview(saveButton)
@@ -147,22 +147,22 @@ class HealthRecordFormViewController: UIViewController {
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
             // Form Fields
-            typePickerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            typePickerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            typePickerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            typePickerView.heightAnchor.constraint(equalToConstant: 120),
+            petPickerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            petPickerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            petPickerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            petPickerView.heightAnchor.constraint(equalToConstant: 120),
             
-            descriptionTextView.topAnchor.constraint(equalTo: typePickerView.bottomAnchor, constant: 20),
-            descriptionTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            descriptionTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            descriptionTextView.heightAnchor.constraint(equalToConstant: 100),
-            
-            veterinarianTextField.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 20),
+            veterinarianTextField.topAnchor.constraint(equalTo: petPickerView.bottomAnchor, constant: 20),
             veterinarianTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             veterinarianTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             veterinarianTextField.heightAnchor.constraint(equalToConstant: 44),
             
-            datePicker.topAnchor.constraint(equalTo: veterinarianTextField.bottomAnchor, constant: 20),
+            reasonTextField.topAnchor.constraint(equalTo: veterinarianTextField.bottomAnchor, constant: 20),
+            reasonTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            reasonTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            reasonTextField.heightAnchor.constraint(equalToConstant: 44),
+            
+            datePicker.topAnchor.constraint(equalTo: reasonTextField.bottomAnchor, constant: 20),
             datePicker.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             datePicker.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             datePicker.heightAnchor.constraint(equalToConstant: 44),
@@ -186,18 +186,29 @@ class HealthRecordFormViewController: UIViewController {
         ])
     }
     
-    // MARK: - Data Setup
-    private func setupData() {
-        if let healthRecord = healthRecord {
-            // Editing mode
-            descriptionTextView.text = healthRecord.description
-            veterinarianTextField.text = healthRecord.veterinarian
-            datePicker.date = healthRecord.date
-            
-            if let index = HealthRecordType.allCases.firstIndex(of: healthRecord.type) {
-                typePickerView.selectRow(index, inComponent: 0, animated: false)
-                selectedType = healthRecord.type
+    // MARK: - Data Loading
+    private func loadPets() {
+        pets = DataManager.shared.fetchPets()
+        
+        if let pet = pet {
+            selectedPet = pet
+            if let index = pets.firstIndex(where: { $0.identifier == pet.identifier }) {
+                petPickerView.selectRow(index, inComponent: 0, animated: false)
             }
+        } else if !pets.isEmpty {
+            selectedPet = pets.first
+        }
+        
+        petPickerView.reloadAllComponents()
+    }
+    
+    private func setupData() {
+        if let appointment = appointment {
+            // Editing mode
+            veterinarianTextField.text = appointment.veterinarian
+            reasonTextField.text = appointment.reason
+            datePicker.date = appointment.appointmentDate
+            notesTextView.text = appointment.notes ?? "Notlar (opsiyonel)..."
         }
     }
     
@@ -205,20 +216,18 @@ class HealthRecordFormViewController: UIViewController {
     @objc private func saveTapped() {
         guard validateForm() else { return }
         
-        let newHealthRecord = HealthRecord(
-            id: healthRecord?.id ?? UUID(),
-            petId: pet?.id ?? healthRecord?.petId ?? UUID(),
-            date: datePicker.date,
-            type: selectedType,
-            description: descriptionTextView.text,
-            veterinarian: veterinarianTextField.text?.isEmpty == false ? veterinarianTextField.text : nil,
-            attachments: []
+        let newAppointment = AppointmentModel(
+            identifier: appointment?.identifier ?? UUID(),
+            petId: selectedPet?.identifier ?? appointment?.petId ?? UUID(),
+            petName: selectedPet?.name ?? appointment?.petName ?? "",
+            appointmentDate: datePicker.date,
+            veterinarian: veterinarianTextField.text ?? "",
+            reason: reasonTextField.text ?? "",
+            notes: notesTextView.text == "Notlar (opsiyonel)..." ? nil : notesTextView.text,
+            status: AppointmentStatus.scheduled
         )
         
-        // TODO: Save to Core Data
-        saveHealthRecord(newHealthRecord)
-        
-        dismiss(animated: true)
+        saveAppointment(newAppointment)
     }
     
     @objc private func cancelTapped() {
@@ -227,8 +236,18 @@ class HealthRecordFormViewController: UIViewController {
     
     // MARK: - Validation
     private func validateForm() -> Bool {
-        guard let description = descriptionTextView.text, !description.isEmpty, description != "Sağlık kaydı açıklaması..." else {
-            showAlert(title: "Hata", message: "Sağlık kaydı açıklaması gereklidir")
+        guard let veterinarian = veterinarianTextField.text, !veterinarian.isEmpty else {
+            showAlert(title: "Hata", message: "Veteriner hekim bilgisi gereklidir")
+            return false
+        }
+        
+        guard let reason = reasonTextField.text, !reason.isEmpty else {
+            showAlert(title: "Hata", message: "Randevu sebebi gereklidir")
+            return false
+        }
+        
+        guard selectedPet != nil else {
+            showAlert(title: "Hata", message: "Evcil hayvan seçimi gereklidir")
             return false
         }
         
@@ -242,11 +261,11 @@ class HealthRecordFormViewController: UIViewController {
     }
     
     // MARK: - Data Operations
-    private func saveHealthRecord(_ healthRecord: HealthRecord) {
-        // TODO: Save to Core Data
-        print("Health record saved: \(healthRecord.description)")
+    private func saveAppointment(_ appointment: AppointmentModel) {
+        DataManager.shared.saveAppointment(appointment)
+        print("Appointment saved: \(appointment.reason)")
         
-        let alert = UIAlertController(title: "Başarılı", message: "Sağlık kaydı kaydedildi", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Başarılı", message: "Randevu kaydedildi", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Tamam", style: .default) { [weak self] _ in
             self?.dismiss(animated: true)
         })
@@ -255,28 +274,29 @@ class HealthRecordFormViewController: UIViewController {
 }
 
 // MARK: - UIPickerViewDataSource & UIPickerViewDelegate
-extension HealthRecordFormViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+extension AppointmentFormViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return HealthRecordType.allCases.count
+        return pets.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return HealthRecordType.allCases[row].rawValue
+        let pet = pets[row]
+        return "\(pet.name) (\(pet.petType.rawValue))"
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedType = HealthRecordType.allCases[row]
+        selectedPet = pets[row]
     }
 }
 
 // MARK: - UITextViewDelegate
-extension HealthRecordFormViewController: UITextViewDelegate {
+extension AppointmentFormViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == "Sağlık kaydı açıklaması..." || textView.text == "Notlar (opsiyonel)..." {
+        if textView.text == "Notlar (opsiyonel)..." {
             textView.text = ""
             textView.textColor = .label
         }
@@ -284,11 +304,7 @@ extension HealthRecordFormViewController: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
-            if textView == descriptionTextView {
-                textView.text = "Sağlık kaydı açıklaması..."
-            } else if textView == notesTextView {
-                textView.text = "Notlar (opsiyonel)..."
-            }
+            textView.text = "Notlar (opsiyonel)..."
             textView.textColor = .placeholderText
         }
     }

@@ -1,5 +1,5 @@
 //
-//  HealthRecordDetailViewController.swift
+//  AppointmentDetailViewController.swift
 //  EvcilHayvanim
 //
 //  Created by macbook on 5.08.2025.
@@ -7,36 +7,38 @@
 
 import UIKit
 
-class HealthRecordDetailViewController: UIViewController {
+class AppointmentDetailViewController: UIViewController {
     
     // MARK: - UI Elements
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
-    private let typeLabel = UILabel()
+    private let statusLabel = UILabel()
     private let dateLabel = UILabel()
-    private let descriptionLabel = UILabel()
+    private let petNameLabel = UILabel()
     private let veterinarianLabel = UILabel()
+    private let reasonLabel = UILabel()
     private let notesLabel = UILabel()
     
     private let editButton = UIButton()
+    private let cancelButton = UIButton()
     private let deleteButton = UIButton()
     
     // MARK: - Properties
-    var healthRecord: HealthRecord?
+    var appointment: AppointmentModel?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
-        loadHealthRecordData()
+        loadAppointmentData()
     }
     
     // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = .systemBackground
-        title = "Sağlık Kaydı Detayı"
+        title = "Randevu Detayı"
         
         setupNavigationBar()
         setupScrollView()
@@ -63,38 +65,45 @@ class HealthRecordDetailViewController: UIViewController {
     }
     
     private func setupLabels() {
-        typeLabel.translatesAutoresizingMaskIntoConstraints = false
+        statusLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        petNameLabel.translatesAutoresizingMaskIntoConstraints = false
         veterinarianLabel.translatesAutoresizingMaskIntoConstraints = false
+        reasonLabel.translatesAutoresizingMaskIntoConstraints = false
         notesLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        typeLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        typeLabel.textColor = .label
+        statusLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        statusLabel.textAlignment = .center
+        statusLabel.layer.cornerRadius = 8
         
         dateLabel.font = UIFont.systemFont(ofSize: 16)
         dateLabel.textColor = .secondaryLabel
         
-        descriptionLabel.font = UIFont.systemFont(ofSize: 16)
-        descriptionLabel.textColor = .label
-        descriptionLabel.numberOfLines = 0
+        petNameLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        petNameLabel.textColor = .systemBlue
         
         veterinarianLabel.font = UIFont.systemFont(ofSize: 16)
         veterinarianLabel.textColor = .secondaryLabel
+        
+        reasonLabel.font = UIFont.systemFont(ofSize: 16)
+        reasonLabel.textColor = .label
+        reasonLabel.numberOfLines = 0
         
         notesLabel.font = UIFont.systemFont(ofSize: 16)
         notesLabel.textColor = .label
         notesLabel.numberOfLines = 0
         
-        contentView.addSubview(typeLabel)
+        contentView.addSubview(statusLabel)
         contentView.addSubview(dateLabel)
-        contentView.addSubview(descriptionLabel)
+        contentView.addSubview(petNameLabel)
         contentView.addSubview(veterinarianLabel)
+        contentView.addSubview(reasonLabel)
         contentView.addSubview(notesLabel)
     }
     
     private func setupButtons() {
         editButton.translatesAutoresizingMaskIntoConstraints = false
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
         
         editButton.setTitle("Düzenle", for: .normal)
@@ -104,6 +113,13 @@ class HealthRecordDetailViewController: UIViewController {
         editButton.layer.cornerRadius = 12
         editButton.addTarget(self, action: #selector(editTapped), for: .touchUpInside)
         
+        cancelButton.setTitle("İptal Et", for: .normal)
+        cancelButton.setTitleColor(.white, for: .normal)
+        cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        cancelButton.backgroundColor = .systemOrange
+        cancelButton.layer.cornerRadius = 12
+        cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
+        
         deleteButton.setTitle("Sil", for: .normal)
         deleteButton.setTitleColor(.white, for: .normal)
         deleteButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
@@ -112,6 +128,7 @@ class HealthRecordDetailViewController: UIViewController {
         deleteButton.addTarget(self, action: #selector(deleteTapped), for: .touchUpInside)
         
         contentView.addSubview(editButton)
+        contentView.addSubview(cancelButton)
         contentView.addSubview(deleteButton)
     }
     
@@ -132,23 +149,28 @@ class HealthRecordDetailViewController: UIViewController {
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
             // Labels
-            typeLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            typeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            typeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            statusLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            statusLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            statusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            statusLabel.heightAnchor.constraint(equalToConstant: 40),
             
-            dateLabel.topAnchor.constraint(equalTo: typeLabel.bottomAnchor, constant: 8),
+            dateLabel.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 8),
             dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
-            descriptionLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 20),
-            descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            petNameLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 20),
+            petNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            petNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
-            veterinarianLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 20),
+            veterinarianLabel.topAnchor.constraint(equalTo: petNameLabel.bottomAnchor, constant: 8),
             veterinarianLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             veterinarianLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
-            notesLabel.topAnchor.constraint(equalTo: veterinarianLabel.bottomAnchor, constant: 20),
+            reasonLabel.topAnchor.constraint(equalTo: veterinarianLabel.bottomAnchor, constant: 20),
+            reasonLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            reasonLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            
+            notesLabel.topAnchor.constraint(equalTo: reasonLabel.bottomAnchor, constant: 20),
             notesLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             notesLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
@@ -158,7 +180,12 @@ class HealthRecordDetailViewController: UIViewController {
             editButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             editButton.heightAnchor.constraint(equalToConstant: 50),
             
-            deleteButton.topAnchor.constraint(equalTo: editButton.bottomAnchor, constant: 12),
+            cancelButton.topAnchor.constraint(equalTo: editButton.bottomAnchor, constant: 12),
+            cancelButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            cancelButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            cancelButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            deleteButton.topAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: 12),
             deleteButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             deleteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             deleteButton.heightAnchor.constraint(equalToConstant: 50),
@@ -167,55 +194,91 @@ class HealthRecordDetailViewController: UIViewController {
     }
     
     // MARK: - Data Loading
-    private func loadHealthRecordData() {
-        guard let healthRecord = healthRecord else { return }
+    private func loadAppointmentData() {
+        guard let appointment = appointment else { return }
         
-        typeLabel.text = healthRecord.type.rawValue
+        // Set status
+        switch appointment.status {
+        case .scheduled:
+            statusLabel.text = "Planlandı"
+            statusLabel.backgroundColor = .systemBlue.withAlphaComponent(0.1)
+            statusLabel.textColor = .systemBlue
+            cancelButton.isHidden = false
+        case .completed:
+            statusLabel.text = "Tamamlandı"
+            statusLabel.backgroundColor = .systemGreen.withAlphaComponent(0.1)
+            statusLabel.textColor = .systemGreen
+            cancelButton.isHidden = true
+        case .cancelled:
+            statusLabel.text = "İptal"
+            statusLabel.backgroundColor = .systemRed.withAlphaComponent(0.1)
+            statusLabel.textColor = .systemRed
+            cancelButton.isHidden = true
+        }
         
+        // Set date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd MMMM yyyy, HH:mm"
         dateFormatter.locale = Locale(identifier: "tr_TR")
-        dateLabel.text = dateFormatter.string(from: healthRecord.date)
+        dateLabel.text = dateFormatter.string(from: appointment.appointmentDate)
         
-        descriptionLabel.text = healthRecord.description
+        petNameLabel.text = appointment.petName
+        veterinarianLabel.text = "Veteriner: \(appointment.veterinarian)"
+        reasonLabel.text = "Sebep: \(appointment.reason)"
         
-        if let veterinarian = healthRecord.veterinarian {
-            veterinarianLabel.text = "Veteriner: \(veterinarian)"
+        if let notes = appointment.notes {
+            notesLabel.text = "Notlar: \(notes)"
         } else {
-            veterinarianLabel.text = "Veteriner: Belirtilmemiş"
-        }
-        
-        if !healthRecord.attachments.isEmpty {
-            notesLabel.text = "Ekler: \(healthRecord.attachments.count) dosya"
-        } else {
-            notesLabel.text = "Ek dosya yok"
+            notesLabel.text = "Not yok"
         }
     }
     
     // MARK: - Actions
     @objc private func editTapped() {
-        let healthRecordFormVC = HealthRecordFormViewController()
-        healthRecordFormVC.healthRecord = healthRecord
-        let navController = UINavigationController(rootViewController: healthRecordFormVC)
+        let appointmentFormVC = AppointmentFormViewController()
+        appointmentFormVC.appointment = appointment
+        let navController = UINavigationController(rootViewController: appointmentFormVC)
         present(navController, animated: true)
     }
     
-    @objc private func deleteTapped() {
-        let alert = UIAlertController(title: "Sağlık Kaydını Sil", message: "Bu sağlık kaydını silmek istediğinizden emin misiniz?", preferredStyle: .alert)
+    @objc private func cancelTapped() {
+        let alert = UIAlertController(title: "Randevuyu İptal Et", message: "Bu randevuyu iptal etmek istediğinizden emin misiniz?", preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "İptal", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Sil", style: .destructive) { [weak self] _ in
-            self?.deleteHealthRecord()
+        alert.addAction(UIAlertAction(title: "İptal Et", style: .destructive) { [weak self] _ in
+            self?.cancelAppointment()
         })
         
         present(alert, animated: true)
     }
     
-    private func deleteHealthRecord() {
-        // TODO: Delete from Core Data
-        print("Health record deleted: \(healthRecord?.description ?? "")")
+    @objc private func deleteTapped() {
+        let alert = UIAlertController(title: "Randevuyu Sil", message: "Bu randevuyu silmek istediğinizden emin misiniz?", preferredStyle: .alert)
         
-        let alert = UIAlertController(title: "Başarılı", message: "Sağlık kaydı silindi", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "İptal", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Sil", style: .destructive) { [weak self] _ in
+            self?.deleteAppointment()
+        })
+        
+        present(alert, animated: true)
+    }
+    
+    private func cancelAppointment() {
+        // TODO: Update in Core Data
+        print("Appointment cancelled: \(appointment?.reason ?? "")")
+        
+        let alert = UIAlertController(title: "Başarılı", message: "Randevu iptal edildi", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Tamam", style: .default) { [weak self] _ in
+            self?.navigationController?.popViewController(animated: true)
+        })
+        present(alert, animated: true)
+    }
+    
+    private func deleteAppointment() {
+        // TODO: Delete from Core Data
+        print("Appointment deleted: \(appointment?.reason ?? "")")
+        
+        let alert = UIAlertController(title: "Başarılı", message: "Randevu silindi", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Tamam", style: .default) { [weak self] _ in
             self?.navigationController?.popViewController(animated: true)
         })

@@ -1,4 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23A344" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="AppointmentEntity" representedClassName="AppointmentEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="appointmentDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="identifier" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="petId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="petName" optional="YES" attributeType="String"/>
+        <attribute name="reason" optional="YES" attributeType="String"/>
+        <attribute name="status" optional="YES" attributeType="String"/>
+        <attribute name="veterinairan" optional="YES" attributeType="String"/>
+        <relationship name="pet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PetEntity" inverseName="appointments" inverseEntity="PetEntity"/>
+    </entity>
+    <entity name="HealthRecordEntity" representedClassName="HealthRecordEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="attachments" optional="YES" attributeType="String"/>
+        <attribute name="identifier" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="petId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="recordDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="recordDescription" optional="YES" attributeType="String"/>
+        <attribute name="recordType" optional="YES" attributeType="String"/>
+        <attribute name="veterinarian" optional="YES" attributeType="String"/>
+        <relationship name="pet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PetEntity" inverseName="healthRecords" inverseEntity="PetEntity"/>
+    </entity>
+    <entity name="PetEntity" representedClassName="PetEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="birthDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="breed" optional="YES" attributeType="String"/>
+        <attribute name="gender" optional="YES" attributeType="String"/>
+        <attribute name="identifier" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="microchipNumber" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="petType" optional="YES" attributeType="String"/>
+        <attribute name="photoURL" optional="YES" attributeType="String"/>
+        <attribute name="weight" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="appointments" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AppointmentEntity" inverseName="pet" inverseEntity="AppointmentEntity"/>
+        <relationship name="healthRecords" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HealthRecordEntity" inverseName="pet" inverseEntity="HealthRecordEntity"/>
+    </entity>
+    <entity name="ReminderEntity" representedClassName="ReminderEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="identifier" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="reminderDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="reminderType" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+    </entity>
 </model>
