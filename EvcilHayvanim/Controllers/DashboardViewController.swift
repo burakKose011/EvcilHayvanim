@@ -597,7 +597,7 @@ public class DashboardViewController: UIViewController {
             todayOverviewCard.topAnchor.constraint(equalTo: statsContainerView.bottomAnchor, constant: 20),
             todayOverviewCard.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             todayOverviewCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            todayOverviewCard.heightAnchor.constraint(equalToConstant: 140),
+            todayOverviewCard.heightAnchor.constraint(greaterThanOrEqualToConstant: 140),
             
             todayTitle.topAnchor.constraint(equalTo: todayOverviewCard.topAnchor, constant: 20),
             todayTitle.leadingAnchor.constraint(equalTo: todayOverviewCard.leadingAnchor, constant: 20),

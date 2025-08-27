@@ -423,7 +423,7 @@ class PetTableViewCell: UITableViewCell {
             
             typeLabel.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
             typeLabel.trailingAnchor.constraint(equalTo: chevronImageView.leadingAnchor, constant: -12),
-            typeLabel.widthAnchor.constraint(equalToConstant: 70),
+            typeLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),
             typeLabel.heightAnchor.constraint(equalToConstant: 24),
             
             chevronImageView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
