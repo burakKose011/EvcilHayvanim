@@ -12,27 +12,46 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let windowScene = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else {
+            print("SceneDelegate: Failed to get windowScene")
+            return
+        }
         
-        // Create window
+        print("SceneDelegate: Creating window for scene")
+        
+        // Create window with FULL SCREEN frame
         window = UIWindow(windowScene: windowScene)
+        
+        // TAM EKRAN İÇİN WINDOW FRAME'İ AYARLA
+        let screenBounds = windowScene.screen.bounds
+        print("SceneDelegate: Screen bounds from windowScene: \(screenBounds)")
+        
+        window?.windowLevel = .normal
+        print("SceneDelegate: Will let UIKit size window automatically")
         
         // Set root view controller - start with splash screen
         let splashViewController = SplashViewController()
+        print("SceneDelegate: Created SplashViewController")
+        
         window?.rootViewController = splashViewController
+        print("SceneDelegate: Set root view controller")
         
         // Make window visible
         window?.makeKeyAndVisible()
+        print("SceneDelegate: Made window key and visible")
+        
+        // Debug: Print window frame
+        if let window = window {
+            print("SceneDelegate: Window frame: \(window.frame)")
+            print("SceneDelegate: Window root view controller: \(String(describing: window.rootViewController))")
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
-        // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
+        // The scene may re-connect later, as its session was not necessarily discarded (see `application:configurationForConnectingSceneSession` instead).
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
@@ -41,7 +60,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
-        // Called when the scene will move from an active state to an inactive state.
+        // Called when the scene will move from an inactive state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
     }
 
@@ -59,4 +78,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
 }
-
