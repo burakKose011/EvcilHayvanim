@@ -21,6 +21,9 @@ public class DashboardViewController: UIViewController {
     private let weatherView = UIView()
     private let weatherIcon = UIImageView()
     private let weatherLabel = UILabel()
+    private let backgroundImageView = UIImageView()
+    private let overlayView = UIView()
+
     
     // Today's Overview
     private let todayOverviewCard = UIView()
@@ -71,6 +74,10 @@ public class DashboardViewController: UIViewController {
         updateTimeBasedContent()
     }
     
+
+    
+
+    
     // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = DesignSystem.Colors.background
@@ -106,24 +113,46 @@ public class DashboardViewController: UIViewController {
         weatherIcon.translatesAutoresizingMaskIntoConstraints = false
         weatherLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        // Hero card with gradient background
-        heroCard.backgroundColor = DesignSystem.Colors.primary
-        heroCard.layer.cornerRadius = 24
-        heroCard.layer.shadowColor = DesignSystem.Colors.primary.cgColor
-        heroCard.layer.shadowOffset = CGSize(width: 0, height: 8)
-        heroCard.layer.shadowOpacity = 0.3
-        heroCard.layer.shadowRadius = 16
+        // Hero card with background image instead of gradient
+        heroCard.backgroundColor = .clear
+        heroCard.layer.cornerRadius = 28 // Daha yumuşak köşeler
         
-        // Add gradient overlay
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [
-            DesignSystem.Colors.primary.cgColor,
-            DesignSystem.Colors.primary.withAlphaComponent(0.8).cgColor
-        ]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
-        gradientLayer.cornerRadius = 24
-        heroCard.layer.insertSublayer(gradientLayer, at: 0)
+        // Add background image
+        backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        if let sevimliImage = UIImage(named: "sevimli") {
+            backgroundImageView.image = sevimliImage
+            print("✅ Sevimli.jpg başarıyla yüklendi")
+        } else {
+            // Fallback olarak sistem resmi kullan
+            backgroundImageView.image = UIImage(systemName: "photo.fill")
+            backgroundImageView.tintColor = DesignSystem.Colors.primary
+            print("⚠️ Sevimli.jpg bulunamadı, fallback resim kullanılıyor")
+        }
+        
+        backgroundImageView.contentMode = .scaleAspectFill
+        backgroundImageView.clipsToBounds = true
+        backgroundImageView.layer.cornerRadius = 28 // Hero card ile uyumlu
+        backgroundImageView.layer.masksToBounds = true
+        
+        // Add dark overlay for better text readability
+        overlayView.translatesAutoresizingMaskIntoConstraints = false
+        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        overlayView.layer.cornerRadius = 28 // Hero card ile uyumlu
+        overlayView.layer.masksToBounds = true
+        
+        // Add subviews
+        contentView.addSubview(heroCard)
+        heroCard.addSubview(backgroundImageView)
+        heroCard.addSubview(overlayView)
+        heroCard.addSubview(profileImageView)
+        heroCard.addSubview(welcomeLabel)
+        heroCard.addSubview(subtitleLabel)
+        heroCard.addSubview(weatherView)
+        weatherView.addSubview(weatherIcon)
+        weatherView.addSubview(weatherLabel)
+        
+
         
         // Profile image
         profileImageView.image = UIImage(systemName: "person.crop.circle.fill")
@@ -160,22 +189,13 @@ public class DashboardViewController: UIViewController {
         weatherLabel.textColor = .white
         
         // Add subviews
-        contentView.addSubview(heroCard)
-        heroCard.addSubview(profileImageView)
-        heroCard.addSubview(welcomeLabel)
-        heroCard.addSubview(subtitleLabel)
-        heroCard.addSubview(weatherView)
         weatherView.addSubview(weatherIcon)
         weatherView.addSubview(weatherLabel)
-        
-        // Update gradient frame
-        DispatchQueue.main.async {
-            gradientLayer.frame = self.heroCard.bounds
-        }
     }
     
     private func setupStatsSection() {
         statsContainerView.translatesAutoresizingMaskIntoConstraints = false
+
         statsStackView.translatesAutoresizingMaskIntoConstraints = false
         
         statsStackView.axis = .horizontal
@@ -183,11 +203,11 @@ public class DashboardViewController: UIViewController {
         statsStackView.spacing = 16
         
         // Create modern stat cards
-        createModernStatCard(petsStatCard, title: "Dostlarım", count: "\(DataManager.shared.fetchPets().count)", icon: "pawprint.fill", color: UIColor(red: 0.2, green: 0.6, blue: 1.0, alpha: 1.0), subtitle: "Evcil Hayvan")
+        createModernStatCard(petsStatCard, title: "Dostlarım", count: "\(DataManager.shared.fetchPets().count)", icon: "pawprint.fill", color: UIColor(red: 0.2, green: 0.6, blue: 1.0, alpha: 1.0), subtitle: "Hayvan")
         
-        createModernStatCard(appointmentsStatCard, title: "Randevular", count: "\(DataManager.shared.fetchAppointments().filter { $0.appointmentDate > Date() }.count)", icon: "calendar", color: UIColor(red: 0.9, green: 0.4, blue: 0.2, alpha: 1.0), subtitle: "Yaklaşan")
+        createModernStatCard(appointmentsStatCard, title: "Randevular", count: "\(DataManager.shared.fetchAppointments().filter { $0.appointmentDate > Date() }.count)", icon: "calendar", color: UIColor(red: 0.9, green: 0.4, blue: 0.2, alpha: 1.0), subtitle: "Randevular")
         
-        createModernStatCard(healthStatCard, title: "Sağlık", count: "\(DataManager.shared.fetchHealthRecords().count)", icon: "heart.fill", color: UIColor(red: 0.2, green: 0.8, blue: 0.4, alpha: 1.0), subtitle: "Kayıt")
+        createModernStatCard(healthStatCard, title: "Sağlık", count: "\(DataManager.shared.fetchHealthRecords().count)", icon: "heart.fill", color: UIColor(red: 0.2, green: 0.8, blue: 0.4, alpha: 1.0), subtitle: "Sağlık")
         
         statsStackView.addArrangedSubview(petsStatCard)
         statsStackView.addArrangedSubview(appointmentsStatCard)
@@ -199,18 +219,47 @@ public class DashboardViewController: UIViewController {
     
     private func createModernStatCard(_ card: UIView, title: String, count: String, icon: String, color: UIColor, subtitle: String) {
         card.translatesAutoresizingMaskIntoConstraints = false
-        card.backgroundColor = .white
-        card.layer.cornerRadius = 20
-        card.layer.shadowColor = UIColor.black.cgColor
+        card.backgroundColor = .white // Beyaz arka plan ekle
+        card.layer.cornerRadius = 20 // Yuvarlak köşeler
+        card.layer.shadowColor = color.withAlphaComponent(0.3).cgColor
         card.layer.shadowOffset = CGSize(width: 0, height: 4)
-        card.layer.shadowOpacity = 0.1
-        card.layer.shadowRadius = 12
+        card.layer.shadowOpacity = 0.2
+        card.layer.shadowRadius = 8
+        
+        // Pati resmi arka plana ekle
+        let pawImageView = UIImageView()
+        pawImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        if let pawImage = UIImage(named: "pati") {
+            pawImageView.image = pawImage
+            pawImageView.tintColor = color // Her card'ın kendi rengi
+        } else {
+            // Fallback olarak sistem icon'u kullan
+            pawImageView.image = UIImage(systemName: "pawprint.fill")
+            pawImageView.tintColor = color
+        }
+        
+        pawImageView.contentMode = .scaleAspectFit
+        pawImageView.alpha = 0.7 // Çok daha canlı yap
+        card.addSubview(pawImageView)
+        card.sendSubviewToBack(pawImageView) // En arkaya gönder
+        
+        // Pati resmi için constraint'ler
+        NSLayoutConstraint.activate([
+            pawImageView.centerXAnchor.constraint(equalTo: card.centerXAnchor),
+            pawImageView.centerYAnchor.constraint(equalTo: card.centerYAnchor),
+            pawImageView.widthAnchor.constraint(equalTo: card.widthAnchor, multiplier: 0.8), // Card'ın %80'i kadar
+            pawImageView.heightAnchor.constraint(equalTo: card.heightAnchor, multiplier: 0.8) // Card'ın %80'i kadar
+        ])
+        
+
         
         // Icon container
         let iconContainer = UIView()
         iconContainer.translatesAutoresizingMaskIntoConstraints = false
-        iconContainer.backgroundColor = color.withAlphaComponent(0.1)
-        iconContainer.layer.cornerRadius = 16
+        iconContainer.backgroundColor = color.withAlphaComponent(0.15) // Daha belirgin
+        iconContainer.layer.cornerRadius = 20 // Daha yumuşak
+
         
         let iconView = UIImageView()
         iconView.translatesAutoresizingMaskIntoConstraints = false
@@ -222,22 +271,27 @@ public class DashboardViewController: UIViewController {
         let countLabel = UILabel()
         countLabel.translatesAutoresizingMaskIntoConstraints = false
         countLabel.text = count
-        countLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        countLabel.textColor = DesignSystem.Colors.textPrimary
+        countLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold) // Daha büyük font
+        countLabel.textColor = color // Card rengi ile uyumlu
+        countLabel.textAlignment = .right // Sağa hizala
         
         // Title label
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = title
-        titleLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold) // Daha uyumlu boyut
         titleLabel.textColor = color
+        titleLabel.textAlignment = .left // Sola hizala
+        titleLabel.numberOfLines = 0 // Çok satır destekle
         
         // Subtitle label
         let subtitleLabel = UILabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.text = subtitle
-        subtitleLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        subtitleLabel.textColor = DesignSystem.Colors.textSecondary
+        subtitleLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium) // Daha uyumlu boyut
+        subtitleLabel.textColor = color.withAlphaComponent(0.9) // Daha belirgin
+        subtitleLabel.textAlignment = .left // Sola hizala
+        subtitleLabel.numberOfLines = 0 // Çok satır destekle
         
         // Add subviews
         iconContainer.addSubview(iconView)
@@ -248,25 +302,24 @@ public class DashboardViewController: UIViewController {
         
         // Setup constraints
         NSLayoutConstraint.activate([
-            iconContainer.topAnchor.constraint(equalTo: card.topAnchor, constant: 16),
-            iconContainer.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 16),
-            iconContainer.widthAnchor.constraint(equalToConstant: 32),
-            iconContainer.heightAnchor.constraint(equalToConstant: 32),
+            iconContainer.topAnchor.constraint(equalTo: card.topAnchor, constant: 12),
+            iconContainer.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 12),
+            iconContainer.widthAnchor.constraint(equalToConstant: 36),
+            iconContainer.heightAnchor.constraint(equalToConstant: 36),
             
             iconView.centerXAnchor.constraint(equalTo: iconContainer.centerXAnchor),
             iconView.centerYAnchor.constraint(equalTo: iconContainer.centerYAnchor),
-            iconView.widthAnchor.constraint(equalToConstant: 18),
-            iconView.heightAnchor.constraint(equalToConstant: 18),
+            iconView.widthAnchor.constraint(equalToConstant: 20),
+            iconView.heightAnchor.constraint(equalToConstant: 20),
             
-            countLabel.topAnchor.constraint(equalTo: iconContainer.bottomAnchor, constant: 12),
-            countLabel.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 16),
-            countLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -16),
+            countLabel.topAnchor.constraint(equalTo: card.topAnchor, constant: 12),
+            countLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -12),
             
-            titleLabel.topAnchor.constraint(equalTo: countLabel.bottomAnchor, constant: 4),
+            titleLabel.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -16),
             titleLabel.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -16),
             
-            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
+            subtitleLabel.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -4),
             subtitleLabel.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 16),
             subtitleLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -16),
             subtitleLabel.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -16)
@@ -278,6 +331,8 @@ public class DashboardViewController: UIViewController {
         card.tag = statsStackView.arrangedSubviews.count
     }
     
+
+    
     private func setupTodayOverview() {
         todayOverviewCard.translatesAutoresizingMaskIntoConstraints = false
         todayTitle.translatesAutoresizingMaskIntoConstraints = false
@@ -285,11 +340,8 @@ public class DashboardViewController: UIViewController {
         
         // Card styling
         todayOverviewCard.backgroundColor = .white
-        todayOverviewCard.layer.cornerRadius = 20
-        todayOverviewCard.layer.shadowColor = UIColor.black.cgColor
-        todayOverviewCard.layer.shadowOffset = CGSize(width: 0, height: 4)
-        todayOverviewCard.layer.shadowOpacity = 0.1
-        todayOverviewCard.layer.shadowRadius = 12
+        todayOverviewCard.layer.cornerRadius = 24 // Daha yumuşak köşeler
+
         
         // Title
         todayTitle.text = "📅 Bugün"
@@ -375,11 +427,8 @@ public class DashboardViewController: UIViewController {
         
         // Card styling
         recentActivityCard.backgroundColor = .white
-        recentActivityCard.layer.cornerRadius = 20
-        recentActivityCard.layer.shadowColor = UIColor.black.cgColor
-        recentActivityCard.layer.shadowOffset = CGSize(width: 0, height: 4)
-        recentActivityCard.layer.shadowOpacity = 0.1
-        recentActivityCard.layer.shadowRadius = 12
+        recentActivityCard.layer.cornerRadius = 24 // Daha yumuşak köşeler
+
         
         // Title
         activityTitle.text = "📈 Son Aktiviteler"
@@ -415,11 +464,8 @@ public class DashboardViewController: UIViewController {
         
         // Clean card styling
         quickActionsCard.backgroundColor = .white
-        quickActionsCard.layer.cornerRadius = 20
-        quickActionsCard.layer.shadowColor = UIColor.black.cgColor
-        quickActionsCard.layer.shadowOffset = CGSize(width: 0, height: 4)
-        quickActionsCard.layer.shadowOpacity = 0.1
-        quickActionsCard.layer.shadowRadius = 12
+        quickActionsCard.layer.cornerRadius = 24 // Daha yumuşak köşeler
+
         
         // Title
         quickActionsTitle.text = "⚡ Hızlı İşlemler"
@@ -453,10 +499,11 @@ public class DashboardViewController: UIViewController {
     
     private func createSimpleActionView(_ view: UIView, icon: String, title: String, subtitle: String, color: UIColor, action: Selector) {
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = color.withAlphaComponent(0.1)
-        view.layer.cornerRadius = 16
-        view.layer.borderWidth = 1
-        view.layer.borderColor = color.withAlphaComponent(0.3).cgColor
+        view.backgroundColor = color.withAlphaComponent(0.12) // Daha belirgin
+        view.layer.cornerRadius = 20 // Daha yumuşak
+        view.layer.borderWidth = 1.5 // Daha kalın border
+        view.layer.borderColor = color.withAlphaComponent(0.4).cgColor // Daha belirgin border
+
         
         let iconView = UIImageView()
         iconView.translatesAutoresizingMaskIntoConstraints = false
@@ -486,8 +533,8 @@ public class DashboardViewController: UIViewController {
         NSLayoutConstraint.activate([
             iconView.topAnchor.constraint(equalTo: view.topAnchor, constant: 12),
             iconView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            iconView.widthAnchor.constraint(equalToConstant: 28),
-            iconView.heightAnchor.constraint(equalToConstant: 28),
+            iconView.widthAnchor.constraint(equalToConstant: 32), // Daha büyük icon
+            iconView.heightAnchor.constraint(equalToConstant: 32), // Daha büyük icon
             
             titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 8),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 6),
@@ -560,6 +607,16 @@ public class DashboardViewController: UIViewController {
             profileImageView.widthAnchor.constraint(equalToConstant: 60),
             profileImageView.heightAnchor.constraint(equalToConstant: 60),
             
+            backgroundImageView.topAnchor.constraint(equalTo: heroCard.topAnchor),
+            backgroundImageView.leadingAnchor.constraint(equalTo: heroCard.leadingAnchor),
+            backgroundImageView.trailingAnchor.constraint(equalTo: heroCard.trailingAnchor),
+            backgroundImageView.bottomAnchor.constraint(equalTo: heroCard.bottomAnchor),
+            
+            overlayView.topAnchor.constraint(equalTo: heroCard.topAnchor),
+            overlayView.leadingAnchor.constraint(equalTo: heroCard.leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: heroCard.trailingAnchor),
+            overlayView.bottomAnchor.constraint(equalTo: heroCard.bottomAnchor),
+            
             welcomeLabel.topAnchor.constraint(equalTo: heroCard.topAnchor, constant: 20),
             welcomeLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 16),
             welcomeLabel.trailingAnchor.constraint(equalTo: heroCard.trailingAnchor, constant: -20),
@@ -586,7 +643,7 @@ public class DashboardViewController: UIViewController {
             statsContainerView.topAnchor.constraint(equalTo: heroCard.bottomAnchor, constant: 20),
             statsContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             statsContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            statsContainerView.heightAnchor.constraint(equalToConstant: 120),
+            statsContainerView.heightAnchor.constraint(equalToConstant: 160), // Daha da yüksek
             
             statsStackView.topAnchor.constraint(equalTo: statsContainerView.topAnchor),
             statsStackView.leadingAnchor.constraint(equalTo: statsContainerView.leadingAnchor),
@@ -791,13 +848,14 @@ public class DashboardViewController: UIViewController {
         
         // Update appointments count
         appointmentsStatCard.subviews.forEach { $0.removeFromSuperview() }
-        createModernStatCard(appointmentsStatCard, title: "Randevular", count: "\(upcomingAppointments.count)", icon: "calendar", color: UIColor(red: 0.9, green: 0.4, blue: 0.2, alpha: 1.0), subtitle: "Yaklaşan")
+        createModernStatCard(appointmentsStatCard, title: "Randevular", count: "\(upcomingAppointments.count)", icon: "calendar", color: UIColor(red: 0.9, green: 0.4, blue: 0.2, alpha: 1.0), subtitle: "Randevular")
         
         // Update health records count
         healthStatCard.subviews.forEach { $0.removeFromSuperview() }
         createModernStatCard(healthStatCard, title: "Sağlık", count: "\(recentHealthRecords.count)", icon: "heart.fill", color: UIColor(red: 0.2, green: 0.8, blue: 0.4, alpha: 1.0), subtitle: "Kayıt")
     }
     
+
 
 }
 

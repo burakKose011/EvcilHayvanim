@@ -36,6 +36,8 @@ class PetFormViewController: UIViewController {
     
     // MARK: - Properties
     var pet: PetModel? // For editing
+    var isEditMode: Bool = false // Düzenleme modu için
+    var onEditCompleted: (() -> Void)? // Düzenleme tamamlandığında çağrılacak callback
     private var selectedPetType: PetType = .dog
     private var selectedGender: Gender = .male
     private var selectedImage: UIImage?
@@ -429,8 +431,8 @@ class PetFormViewController: UIViewController {
     
     // MARK: - Data Setup
     private func setupData() {
-        if let pet = pet {
-            // Editing mode
+        if let pet = pet, isEditMode {
+            // Düzenleme modu - mevcut hayvan bilgilerini yükle
             nameTextField.text = pet.name
             breedTextField.text = pet.breed
             weightTextField.text = "\(pet.weight)"
@@ -442,11 +444,24 @@ class PetFormViewController: UIViewController {
             // Update button titles
             updateTypeButtonTitle()
             updateGenderButtonTitle()
+            updateBirthDateButtonTitle(pet.birthDate)
             
-            // TODO: Load pet image
-            petImageView.image = UIImage(systemName: pet.petType.iconName)
-            petImageView.tintColor = UIColor(red: 0.2, green: 0.6, blue: 1.0, alpha: 1.0)
+            // Load pet image if available
+            if let photoURL = pet.photoURL {
+                // TODO: Load image from URL
+                petImageView.image = UIImage(named: "pet")
+            } else {
+                petImageView.image = UIImage(systemName: pet.petType.iconName)
+                petImageView.tintColor = UIColor(red: 0.2, green: 0.6, blue: 1.0, alpha: 1.0)
+            }
             photoIconView.isHidden = true
+            
+            // Update header for edit mode
+            headerTitleLabel.text = "Evcil Hayvan Düzenle"
+            headerSubtitleLabel.text = "\(pet.name) bilgilerini güncelleyin"
+            
+            // Update save button
+            saveButton.setTitle("Güncelle", for: .normal)
         }
     }
     
@@ -459,6 +474,15 @@ class PetFormViewController: UIViewController {
     private func updateGenderButtonTitle() {
         if let subtitleLabel = genderButton.subviews.first?.subviews.last as? UILabel {
             subtitleLabel.text = selectedGender.rawValue
+        }
+    }
+    
+    private func updateBirthDateButtonTitle(_ date: Date) {
+        if let subtitleLabel = birthDateButton.subviews.first?.subviews.last as? UILabel {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd MMM yyyy"
+            formatter.locale = Locale(identifier: "tr_TR")
+            subtitleLabel.text = formatter.string(from: date)
         }
     }
     
@@ -511,6 +535,7 @@ class PetFormViewController: UIViewController {
             if let subtitleLabel = self?.birthDateButton.subviews.first?.subviews.last as? UILabel {
                 let formatter = DateFormatter()
                 formatter.dateFormat = "dd MMM yyyy"
+                formatter.locale = Locale(identifier: "tr_TR")
                 subtitleLabel.text = formatter.string(from: datePicker.date)
             }
         })
@@ -546,61 +571,124 @@ class PetFormViewController: UIViewController {
     @objc private func saveTapped() {
         guard validateForm() else { return }
         
-        let newPet = PetModel(
-            identifier: pet?.identifier ?? UUID(),
-            name: nameTextField.text ?? "",
-            petType: selectedPetType,
-            breed: breedTextField.text ?? "",
-            birthDate: Date(), // TODO: Get from date picker
-            weight: Double(weightTextField.text ?? "0") ?? 0,
-            gender: selectedGender,
-            microchipNumber: microchipTextField.text?.isEmpty == false ? microchipTextField.text : nil,
-            photoURL: nil // TODO: Save image and get URL
-        )
+        let name = nameTextField.text ?? ""
+        let breed = breedTextField.text ?? ""
+        let weight = Double(weightTextField.text ?? "0") ?? 0.0
+        let microchip = microchipTextField.text?.isEmpty == false ? microchipTextField.text : nil
         
-        savePet(newPet)
+        // Doğum tarihini al
+        var birthDate = Date()
+        if let subtitleLabel = birthDateButton.subviews.first?.subviews.last as? UILabel,
+           let dateText = subtitleLabel.text,
+           dateText != "Seçin" {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd MMM yyyy"
+            formatter.locale = Locale(identifier: "tr_TR")
+            birthDate = formatter.date(from: dateText) ?? Date()
+        }
+        
+        if isEditMode, let existingPet = pet {
+            // Düzenleme modu - mevcut hayvanı güncelle
+            let updatedPet = PetModel(
+                identifier: existingPet.identifier,
+                name: name,
+                petType: selectedPetType,
+                breed: breed,
+                birthDate: birthDate,
+                weight: weight,
+                gender: selectedGender,
+                microchipNumber: microchip,
+                photoURL: existingPet.photoURL
+            )
+            
+            DataManager.shared.savePet(updatedPet)
+            
+            // Callback'i çağır
+            onEditCompleted?()
+            
+            // Başarı mesajı göster
+            showSuccessAlert(message: "\(name) bilgileri başarıyla güncellendi! 🎉")
+        } else {
+            // Yeni hayvan ekleme modu
+            let newPet = PetModel(
+                identifier: UUID(),
+                name: name,
+                petType: selectedPetType,
+                breed: breed,
+                birthDate: birthDate,
+                weight: weight,
+                gender: selectedGender,
+                microchipNumber: microchip,
+                photoURL: nil
+            )
+            
+            DataManager.shared.savePet(newPet)
+            
+            // Başarı mesajı göster
+            showSuccessAlert(message: "\(name) başarıyla eklendi! 🎉")
+        }
     }
     
     @objc private func cancelTapped() {
-        dismiss(animated: true)
+        if isEditMode {
+            // Düzenleme modunda değişiklik yapıldıysa uyarı göster
+            let alert = UIAlertController(title: "Değişiklikleri Kaydetmedin", message: "Çıkmak istediğinden emin misin?", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Devam Et", style: .cancel))
+            alert.addAction(UIAlertAction(title: "Çık", style: .destructive) { [weak self] _ in
+                self?.dismiss(animated: true)
+            })
+            
+            present(alert, animated: true)
+        } else {
+            dismiss(animated: true)
+        }
     }
     
     // MARK: - Validation
     private func validateForm() -> Bool {
         guard let name = nameTextField.text, !name.isEmpty else {
-            showAlert(title: "Hata", message: "Evcil hayvan adı gereklidir")
+            showValidationAlert(message: "Lütfen evcil hayvan adını girin 🐾")
             return false
         }
         
         guard let breed = breedTextField.text, !breed.isEmpty else {
-            showAlert(title: "Hata", message: "Irk bilgisi gereklidir")
+            showValidationAlert(message: "Lütfen ırk bilgisini girin 🏷️")
             return false
         }
         
-        guard let weightText = weightTextField.text, let weight = Double(weightText), weight > 0 else {
-            showAlert(title: "Hata", message: "Geçerli bir kilo değeri girin")
+        guard let weightText = weightTextField.text, !weightText.isEmpty,
+              let weight = Double(weightText), weight > 0 else {
+            showValidationAlert(message: "Lütfen geçerli bir kilo girin ⚖️")
+            return false
+        }
+        
+        // Doğum tarihi kontrolü
+        if let subtitleLabel = birthDateButton.subviews.first?.subviews.last as? UILabel,
+           subtitleLabel.text == "Seçin" {
+            showValidationAlert(message: "Lütfen doğum tarihini seçin 📅")
             return false
         }
         
         return true
     }
     
-    private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    private func showValidationAlert(message: String) {
+        let alert = UIAlertController(title: "⚠️ Eksik Bilgi", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Tamam", style: .default))
         present(alert, animated: true)
     }
     
-    // MARK: - Data Operations
-    private func savePet(_ pet: PetModel) {
-        DataManager.shared.savePet(pet)
-        print("Pet saved: \(pet.name)")
-        
-        let alert = UIAlertController(title: "Başarılı", message: "Evcil hayvan kaydedildi", preferredStyle: .alert)
+    private func showSuccessAlert(message: String) {
+        let alert = UIAlertController(title: "✅ Başarılı!", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Tamam", style: .default) { [weak self] _ in
             self?.dismiss(animated: true)
         })
         present(alert, animated: true)
+        
+        // Haptic feedback
+        let notificationFeedback = UINotificationFeedbackGenerator()
+        notificationFeedback.notificationOccurred(.success)
     }
 }
 
@@ -612,6 +700,7 @@ extension PetFormViewController: UIImagePickerControllerDelegate, UINavigationCo
             petImageView.image = image
             photoIconView.isHidden = true
         }
+        
         picker.dismiss(animated: true)
     }
     

@@ -22,6 +22,11 @@ class HealthRecordFormViewController: UIViewController {
     private let recordTypeButton = UIButton()
     private let recordTypeIconView = UIImageView()
     
+    private let petSelectionCard = UIView()
+    private let petSelectionButton = UIButton()
+    private let petSelectionIconView = UIImageView()
+    private let selectedPetLabel = UILabel()
+    
     private let descriptionCard = UIView()
     private let descriptionTextField = UITextField()
     private let descriptionIconView = UIImageView()
@@ -129,6 +134,7 @@ class HealthRecordFormViewController: UIViewController {
     
     private func setupFormCards() {
         setupRecordTypeCard()
+        setupPetSelectionCard()
         setupDescriptionCard()
         setupVeterinarianCard()
         setupDateCard()
@@ -163,6 +169,92 @@ class HealthRecordFormViewController: UIViewController {
         contentView.addSubview(recordTypeCard)
         recordTypeCard.addSubview(recordTypeIconView)
         recordTypeCard.addSubview(recordTypeButton)
+    }
+    
+    private func setupPetSelectionCard() {
+        petSelectionCard.translatesAutoresizingMaskIntoConstraints = false
+        petSelectionButton.translatesAutoresizingMaskIntoConstraints = false
+        petSelectionIconView.translatesAutoresizingMaskIntoConstraints = false
+        selectedPetLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Card styling
+        petSelectionCard.backgroundColor = DesignSystem.Colors.cardBackground
+        petSelectionCard.layer.cornerRadius = 16
+        petSelectionCard.layer.shadowColor = UIColor.black.cgColor
+        petSelectionCard.layer.shadowOffset = CGSize(width: 0, height: 2)
+        petSelectionCard.layer.shadowOpacity = 0.1
+        petSelectionCard.layer.shadowRadius = 8
+        
+        // Add border for better visual feedback
+        petSelectionCard.layer.borderWidth = 1
+        petSelectionCard.layer.borderColor = DesignSystem.Colors.primary.withAlphaComponent(0.3).cgColor
+        
+        // Add shadow to card
+        petSelectionCard.layer.shadowColor = UIColor.black.cgColor
+        petSelectionCard.layer.shadowOffset = CGSize(width: 0, height: 2)
+        petSelectionCard.layer.shadowOpacity = 0.1
+        petSelectionCard.layer.shadowRadius = 4
+        
+        // Add shadow to icon
+        petSelectionIconView.layer.shadowColor = UIColor.black.cgColor
+        petSelectionIconView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        petSelectionIconView.layer.shadowOpacity = 0.1
+        petSelectionIconView.layer.shadowRadius = 4
+        
+        // Icon
+        petSelectionIconView.image = UIImage(systemName: "pawprint.fill")
+        petSelectionIconView.tintColor = DesignSystem.Colors.primary
+        petSelectionIconView.contentMode = .scaleAspectFit
+        petSelectionIconView.backgroundColor = DesignSystem.Colors.primary.withAlphaComponent(0.1)
+        petSelectionIconView.layer.cornerRadius = 12
+        
+        // Add border to icon
+        petSelectionIconView.layer.borderWidth = 1
+        petSelectionIconView.layer.borderColor = DesignSystem.Colors.primary.withAlphaComponent(0.3).cgColor
+        
+        // Add shadow to icon
+        petSelectionIconView.layer.shadowColor = UIColor.black.cgColor
+        petSelectionIconView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        petSelectionIconView.layer.shadowOpacity = 0.1
+        petSelectionIconView.layer.shadowRadius = 4
+        
+        // Button
+        if let pet = pet {
+            petSelectionButton.setTitle("\(getPetEmoji(for: pet.petType)) \(pet.name)", for: .normal)
+            petSelectionButton.setTitleColor(DesignSystem.Colors.primary, for: .normal)
+        } else {
+            petSelectionButton.setTitle("🐾 Hayvan Seçin", for: .normal)
+            petSelectionButton.setTitleColor(DesignSystem.Colors.textPrimary, for: .normal)
+        }
+        petSelectionButton.titleLabel?.font = DesignSystem.Typography.callout
+        petSelectionButton.contentHorizontalAlignment = .left
+        petSelectionButton.addTarget(self, action: #selector(petSelectionTapped), for: .touchUpInside)
+        
+        // Add shadow to button
+        petSelectionButton.layer.shadowColor = UIColor.black.cgColor
+        petSelectionButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+        petSelectionButton.layer.shadowOpacity = 0.1
+        petSelectionButton.layer.shadowRadius = 4
+        
+        // Selected pet label
+        if let pet = pet {
+            selectedPetLabel.text = "Seçili: \(pet.name) (\(pet.petType.rawValue))"
+            selectedPetLabel.textColor = DesignSystem.Colors.success
+        } else {
+            selectedPetLabel.text = "Lütfen bir hayvan seçin"
+            selectedPetLabel.textColor = DesignSystem.Colors.textSecondary
+        }
+        selectedPetLabel.font = DesignSystem.Typography.caption1
+        
+        // Update card background based on selection
+        if pet?.name != nil {
+            petSelectionCard.backgroundColor = DesignSystem.Colors.success.withAlphaComponent(0.1)
+        }
+        
+        contentView.addSubview(petSelectionCard)
+        petSelectionCard.addSubview(petSelectionIconView)
+        petSelectionCard.addSubview(petSelectionButton)
+        petSelectionCard.addSubview(selectedPetLabel)
     }
     
     private func setupDescriptionCard() {
@@ -320,6 +412,26 @@ class HealthRecordFormViewController: UIViewController {
     
     // MARK: - Data Setup
     private func setupData() {
+        // Set default pet if none selected
+        if pet == nil && !DataManager.shared.fetchPets().isEmpty {
+            pet = DataManager.shared.fetchPets().first
+            selectedPetLabel.text = "Seçili: \(pet?.name ?? "") (\(pet?.petType.rawValue ?? ""))"
+            selectedPetLabel.textColor = DesignSystem.Colors.success
+            
+            // Buton başlığını da güncelle
+            if let pet = pet {
+                petSelectionButton.setTitle("\(getPetEmoji(for: pet.petType)) \(pet.name)", for: .normal)
+                petSelectionButton.setTitleColor(DesignSystem.Colors.primary, for: .normal)
+            }
+            
+            // Update card background and border
+            petSelectionCard.backgroundColor = DesignSystem.Colors.success.withAlphaComponent(0.1)
+            petSelectionCard.layer.borderColor = DesignSystem.Colors.success.withAlphaComponent(0.5).cgColor
+            petSelectionIconView.backgroundColor = DesignSystem.Colors.success.withAlphaComponent(0.2)
+            petSelectionIconView.layer.borderColor = DesignSystem.Colors.success.withAlphaComponent(0.5).cgColor
+            petSelectionIconView.tintColor = DesignSystem.Colors.success
+        }
+        
         if let healthRecord = healthRecord {
             // Editing mode - populate fields with existing data
             selectedRecordType = healthRecord.recordType
@@ -383,8 +495,29 @@ class HealthRecordFormViewController: UIViewController {
             recordTypeButton.trailingAnchor.constraint(equalTo: recordTypeCard.trailingAnchor, constant: -16),
             recordTypeButton.bottomAnchor.constraint(equalTo: recordTypeCard.bottomAnchor),
             
+            // Pet Selection Card
+            petSelectionCard.topAnchor.constraint(equalTo: recordTypeCard.bottomAnchor, constant: 16),
+            petSelectionCard.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            petSelectionCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            petSelectionCard.heightAnchor.constraint(equalToConstant: 60),
+            
+            petSelectionIconView.leadingAnchor.constraint(equalTo: petSelectionCard.leadingAnchor, constant: 16),
+            petSelectionIconView.centerYAnchor.constraint(equalTo: petSelectionCard.centerYAnchor),
+            petSelectionIconView.widthAnchor.constraint(equalToConstant: 24),
+            petSelectionIconView.heightAnchor.constraint(equalToConstant: 24),
+            
+            petSelectionButton.topAnchor.constraint(equalTo: petSelectionCard.topAnchor),
+            petSelectionButton.leadingAnchor.constraint(equalTo: petSelectionIconView.trailingAnchor, constant: 12),
+            petSelectionButton.trailingAnchor.constraint(equalTo: petSelectionCard.trailingAnchor, constant: -16),
+            petSelectionButton.bottomAnchor.constraint(equalTo: petSelectionCard.bottomAnchor),
+            
+            selectedPetLabel.topAnchor.constraint(equalTo: petSelectionButton.bottomAnchor, constant: 4),
+            selectedPetLabel.leadingAnchor.constraint(equalTo: petSelectionIconView.trailingAnchor, constant: 12),
+            selectedPetLabel.trailingAnchor.constraint(equalTo: petSelectionCard.trailingAnchor, constant: -16),
+            selectedPetLabel.bottomAnchor.constraint(equalTo: petSelectionCard.bottomAnchor),
+            
             // Description Card
-            descriptionCard.topAnchor.constraint(equalTo: recordTypeCard.bottomAnchor, constant: 16),
+            descriptionCard.topAnchor.constraint(equalTo: petSelectionCard.bottomAnchor, constant: 16),
             descriptionCard.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             descriptionCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             descriptionCard.heightAnchor.constraint(equalToConstant: 60),
@@ -463,7 +596,7 @@ class HealthRecordFormViewController: UIViewController {
     
     // MARK: - Animations
     private func setupAnimations() {
-        let cards = [headerView, recordTypeCard, descriptionCard, veterinarianCard, dateCard, notesCard, saveButton]
+        let cards = [headerView, recordTypeCard, petSelectionCard, descriptionCard, veterinarianCard, dateCard, notesCard, saveButton]
         
         for (index, card) in cards.enumerated() {
             card.alpha = 0
@@ -502,6 +635,60 @@ class HealthRecordFormViewController: UIViewController {
         }
         
         present(alert, animated: true)
+    }
+    
+    @objc private func petSelectionTapped() {
+        let alert = UIAlertController(title: "🐾 Hayvan Seçin", message: "Hangisini sağlık kaydı yapmak istiyorsunuz?", preferredStyle: .actionSheet)
+        
+        for pet in DataManager.shared.fetchPets() {
+            let action = UIAlertAction(title: "\(getPetEmoji(for: pet.petType)) \(pet.name) (\(pet.petType.rawValue))", style: .default) { [weak self] _ in
+                self?.pet = pet
+                
+                // Buton başlığını güncelle - seçilen hayvanı göster
+                self?.petSelectionButton.setTitle("\(self?.getPetEmoji(for: pet.petType) ?? "🐾") \(pet.name)", for: .normal)
+                self?.petSelectionButton.setTitleColor(DesignSystem.Colors.primary, for: .normal)
+                
+                // Alt etiketi güncelle
+                self?.selectedPetLabel.text = "Seçili: \(pet.name) (\(pet.petType.rawValue))"
+                self?.selectedPetLabel.textColor = DesignSystem.Colors.success
+                
+                // Kart arka planını ve kenarlığını güncelle
+                UIView.animate(withDuration: 0.3) {
+                    self?.petSelectionCard.backgroundColor = DesignSystem.Colors.success.withAlphaComponent(0.1)
+                    self?.petSelectionCard.layer.borderColor = DesignSystem.Colors.success.withAlphaComponent(0.5).cgColor
+                    self?.petSelectionIconView.backgroundColor = DesignSystem.Colors.success.withAlphaComponent(0.2)
+                    self?.petSelectionIconView.layer.borderColor = DesignSystem.Colors.success.withAlphaComponent(0.5).cgColor
+                    self?.petSelectionIconView.tintColor = DesignSystem.Colors.success
+                }
+                
+                // Haptic feedback
+                let impactFeedback = UIImpactFeedbackGenerator(style: .light)
+                impactFeedback.impactOccurred()
+            }
+            alert.addAction(action)
+        }
+        
+        alert.addAction(UIAlertAction(title: "İptal", style: .cancel))
+        
+        // For iPad
+        if let popover = alert.popoverPresentationController {
+            popover.sourceView = petSelectionButton
+            popover.sourceRect = petSelectionButton.bounds
+        }
+        
+        present(alert, animated: true)
+    }
+    
+    private func getPetEmoji(for petType: PetType) -> String {
+        switch petType {
+        case .dog: return "🐕"
+        case .cat: return "🐱"
+        case .bird: return "🐦"
+        case .fish: return "🐠"
+        case .rabbit: return "🐰"
+        case .hamster: return "🐹"
+        case .other: return "🐾"
+        }
     }
     
     private func getEmojiForRecordType(_ recordType: HealthRecordType) -> String {
@@ -562,6 +749,11 @@ class HealthRecordFormViewController: UIViewController {
     
     // MARK: - Validation
     private func validateForm() -> Bool {
+        guard pet != nil else {
+            showValidationAlert(message: "Lütfen bir hayvan seçin 🐾")
+            return false
+        }
+        
         guard let description = descriptionTextField.text, !description.isEmpty else {
             showValidationAlert(message: "Kayıt açıklaması gereklidir 📝")
             return false

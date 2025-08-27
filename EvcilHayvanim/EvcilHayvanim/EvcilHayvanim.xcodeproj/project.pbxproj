@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA6511D72E5F77EF0013EAAF /* hayvanlar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FA6511D62E5F77EE0013EAAF /* hayvanlar.jpg */; };
+		FA6511D92E5F7B5B0013EAAF /* anaSayfa.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FA6511D82E5F7B5B0013EAAF /* anaSayfa.jpg */; };
+		FA6511DB2E5F87000013EAAF /* pati.png in Resources */ = {isa = PBXBuildFile; fileRef = FA6511DA2E5F87000013EAAF /* pati.png */; };
+		FA6511DD2E5F8D9F0013EAAF /* sevimli.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FA6511DC2E5F8D9F0013EAAF /* sevimli.jpg */; };
 		FAB17AB62E5A0E5E00140D3F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AB52E5A0E5E00140D3F /* AppDelegate.swift */; };
 		FAB17AB82E5A0E5E00140D3F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17AB72E5A0E5E00140D3F /* SceneDelegate.swift */; };
 		FAB17ADA2E5A0E7800140D3F /* AppointmentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB17ACC2E5A0E7800140D3F /* AppointmentDetailViewController.swift */; };
@@ -34,6 +38,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FA6511D62E5F77EE0013EAAF /* hayvanlar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = hayvanlar.jpg; sourceTree = "<group>"; };
+		FA6511D82E5F7B5B0013EAAF /* anaSayfa.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = anaSayfa.jpg; sourceTree = "<group>"; };
+		FA6511DA2E5F87000013EAAF /* pati.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pati.png; sourceTree = "<group>"; };
+		FA6511DC2E5F8D9F0013EAAF /* sevimli.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sevimli.jpg; sourceTree = "<group>"; };
 		FAB17AB22E5A0E5E00140D3F /* EvcilHayvanim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EvcilHayvanim.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAB17AB52E5A0E5E00140D3F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAB17AB72E5A0E5E00140D3F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -139,6 +147,10 @@
 			isa = PBXGroup;
 			children = (
 				FAB17AEA2E5A0E9800140D3F /* Assets.xcassets */,
+				FA6511DC2E5F8D9F0013EAAF /* sevimli.jpg */,
+				FA6511DA2E5F87000013EAAF /* pati.png */,
+				FA6511D62E5F77EE0013EAAF /* hayvanlar.jpg */,
+				FA6511D82E5F7B5B0013EAAF /* anaSayfa.jpg */,
 				FAB17AEB2E5A0E9800140D3F /* pet.png */,
 				FAB17AEC2E5A0E9800140D3F /* pett.png */,
 				FAB17AED2E5A0E9800140D3F /* petYanimda.png */,
@@ -217,10 +229,14 @@
 			files = (
 				FAB17AF02E5A0E9800140D3F /* pet.png in Resources */,
 				FAB17AF82E5A0EB300140D3F /* LaunchScreen.storyboard in Resources */,
+				FA6511DB2E5F87000013EAAF /* pati.png in Resources */,
 				FAB17AF22E5A0E9800140D3F /* petYanimda.png in Resources */,
+				FA6511D72E5F77EF0013EAAF /* hayvanlar.jpg in Resources */,
+				FA6511DD2E5F8D9F0013EAAF /* sevimli.jpg in Resources */,
 				FAB17AF12E5A0E9800140D3F /* pett.png in Resources */,
 				FAB17AF92E5A0EB300140D3F /* Main.storyboard in Resources */,
 				FAB17AEF2E5A0E9800140D3F /* Assets.xcassets in Resources */,
+				FA6511D92E5F7B5B0013EAAF /* anaSayfa.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

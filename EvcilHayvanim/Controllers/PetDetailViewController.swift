@@ -32,10 +32,10 @@ class PetDetailViewController: UIViewController {
     
     // Stats Grid
     private let statsGrid = UIStackView()
-    private lazy var weightCard = createStatCard(title: "Kilo", icon: "scalemass.fill", color: .systemBlue)
-    private lazy var ageCard = createStatCard(title: "Yaş", icon: "calendar", color: .systemGreen)
-    private lazy var genderCard = createStatCard(title: "Cinsiyet", icon: "person.fill", color: .systemPink)
-    private lazy var microchipCard = createStatCard(title: "Mikroçip", icon: "wave.3.right", color: .systemOrange)
+    private lazy var weightCard = createStatCard(title: "Kilo", icon: "scalemass.fill", color: UIColor(red: 0.2, green: 0.6, blue: 1.0, alpha: 1.0))
+    private lazy var ageCard = createStatCard(title: "Yaş", icon: "calendar", color: UIColor(red: 0.2, green: 0.8, blue: 0.4, alpha: 1.0))
+    private lazy var genderCard = createStatCard(title: "Cinsiyet", icon: "person.fill", color: UIColor(red: 0.9, green: 0.4, blue: 0.8, alpha: 1.0))
+    private lazy var microchipCard = createStatCard(title: "Mikroçip", icon: "wave.3.right", color: UIColor(red: 0.9, green: 0.7, blue: 0.2, alpha: 1.0))
     
     // Quick Actions
     private let actionsCard = UIView()
@@ -52,10 +52,8 @@ class PetDetailViewController: UIViewController {
     // Recent Records
     private let recordsCard = UIView()
     private let recordsTitle = UILabel()
+    private let recordsIcon = UIImageView()
     private let recordsCollectionView: UICollectionView
-    
-    // Floating Action Button
-    private let fabButton = UIButton()
     
     // MARK: - Properties
     var pet: PetModel?
@@ -64,10 +62,10 @@ class PetDetailViewController: UIViewController {
     // MARK: - Initialization
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 16
-        layout.minimumLineSpacing = 16
-        layout.itemSize = CGSize(width: 300, height: 140)
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = 12
+        layout.minimumLineSpacing = 12
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         recordsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -110,7 +108,6 @@ class PetDetailViewController: UIViewController {
         setupActionsCard()
         setupHealthCard()
         setupRecordsCard()
-        setupFAB()
     }
     
     private func setupNavigationBar() {
@@ -162,10 +159,10 @@ class PetDetailViewController: UIViewController {
         heroOverlay.backgroundColor = .clear
         heroGradientLayer.colors = [
             UIColor.clear.cgColor,
-            UIColor.black.withAlphaComponent(0.3).cgColor,
-            UIColor.black.withAlphaComponent(0.7).cgColor
+            UIColor.black.withAlphaComponent(0.2).cgColor,
+            UIColor.black.withAlphaComponent(0.6).cgColor
         ]
-        heroGradientLayer.locations = [0.0, 0.6, 1.0]
+        heroGradientLayer.locations = [0.0, 0.5, 1.0]
         heroOverlay.layer.addSublayer(heroGradientLayer)
         
         contentView.addSubview(heroContainer)
@@ -184,63 +181,63 @@ class PetDetailViewController: UIViewController {
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         favoriteButton.translatesAutoresizingMaskIntoConstraints = false
         
-        // Card styling
+        // Card styling - daha modern
         petInfoCard.backgroundColor = .white
-        petInfoCard.layer.cornerRadius = 24
+        petInfoCard.layer.cornerRadius = 28
         petInfoCard.layer.shadowColor = UIColor.black.cgColor
-        petInfoCard.layer.shadowOffset = CGSize(width: 0, height: 8)
-        petInfoCard.layer.shadowOpacity = 0.12
-        petInfoCard.layer.shadowRadius = 20
+        petInfoCard.layer.shadowOffset = CGSize(width: 0, height: 12)
+        petInfoCard.layer.shadowOpacity = 0.15
+        petInfoCard.layer.shadowRadius = 24
         
-        // Pet image container
+        // Pet image container - daha küçük ve kompakt
         petImageContainer.backgroundColor = .white
-        petImageContainer.layer.cornerRadius = 50
+        petImageContainer.layer.cornerRadius = 40
         petImageContainer.layer.borderWidth = 4
         petImageContainer.layer.borderColor = UIColor.white.cgColor
         petImageContainer.layer.shadowColor = UIColor.black.cgColor
-        petImageContainer.layer.shadowOffset = CGSize(width: 0, height: 4)
+        petImageContainer.layer.shadowOffset = CGSize(width: 0, height: 6)
         petImageContainer.layer.shadowOpacity = 0.15
         petImageContainer.layer.shadowRadius = 12
         
         // Pet image
         petImageView.contentMode = .scaleAspectFill
         petImageView.clipsToBounds = true
-        petImageView.layer.cornerRadius = 46
+        petImageView.layer.cornerRadius = 36
         
-        // Name label
-        nameLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        // Name label - daha küçük ve kompakt
+        nameLabel.font = UIFont.systemFont(ofSize: 28, weight: .bold)
         nameLabel.textColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
         nameLabel.textAlignment = .center
         
-        // Breed label
-        breedLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        breedLabel.textColor = UIColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1.0)
+        // Breed label - daha küçük
+        breedLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        breedLabel.textColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1.0)
         breedLabel.textAlignment = .center
         
-        // Age label
-        ageLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        ageLabel.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+        // Age label - daha küçük
+        ageLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        ageLabel.textColor = UIColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1.0)
         ageLabel.textAlignment = .center
         
-        // Status badge
+        // Status badge - daha modern
         statusBadge.backgroundColor = UIColor(red: 0.2, green: 0.8, blue: 0.4, alpha: 1.0)
-        statusBadge.layer.cornerRadius = 12
+        statusBadge.layer.cornerRadius = 16
         
-        statusLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        statusLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         statusLabel.textColor = .white
         statusLabel.text = "Aktif"
         statusLabel.textAlignment = .center
         
-        // Favorite button
+        // Favorite button - daha modern
         favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
         favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .selected)
         favoriteButton.tintColor = .systemRed
         favoriteButton.backgroundColor = .white
-        favoriteButton.layer.cornerRadius = 20
+        favoriteButton.layer.cornerRadius = 24
         favoriteButton.layer.shadowColor = UIColor.black.cgColor
-        favoriteButton.layer.shadowOffset = CGSize(width: 0, height: 2)
-        favoriteButton.layer.shadowOpacity = 0.1
-        favoriteButton.layer.shadowRadius = 8
+        favoriteButton.layer.shadowOffset = CGSize(width: 0, height: 4)
+        favoriteButton.layer.shadowOpacity = 0.15
+        favoriteButton.layer.shadowRadius = 12
         favoriteButton.addTarget(self, action: #selector(favoriteTapped), for: .touchUpInside)
         
         contentView.addSubview(petInfoCard)
@@ -271,11 +268,21 @@ class PetDetailViewController: UIViewController {
     private func createStatCard(title: String, icon: String, color: UIColor) -> UIView {
         let card = UIView()
         card.backgroundColor = .white
-        card.layer.cornerRadius = 16
+        card.layer.cornerRadius = 20
         card.layer.shadowColor = UIColor.black.cgColor
-        card.layer.shadowOffset = CGSize(width: 0, height: 2)
-        card.layer.shadowOpacity = 0.06
-        card.layer.shadowRadius = 8
+        card.layer.shadowOffset = CGSize(width: 0, height: 4)
+        card.layer.shadowOpacity = 0.08
+        card.layer.shadowRadius = 12
+        
+        // Gradient background
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [
+            color.withAlphaComponent(0.1).cgColor,
+            color.withAlphaComponent(0.05).cgColor
+        ]
+        gradientLayer.locations = [0.0, 1.0]
+        gradientLayer.cornerRadius = 20
+        card.layer.insertSublayer(gradientLayer, at: 0)
         
         let iconView = UIImageView()
         iconView.image = UIImage(systemName: icon)
@@ -283,39 +290,56 @@ class PetDetailViewController: UIViewController {
         iconView.contentMode = .scaleAspectFit
         iconView.translatesAutoresizingMaskIntoConstraints = false
         
+        // Icon background
+        let iconBackground = UIView()
+        iconBackground.backgroundColor = color.withAlphaComponent(0.15)
+        iconBackground.layer.cornerRadius = 16
+        iconBackground.translatesAutoresizingMaskIntoConstraints = false
+        
         let titleLabel = UILabel()
         titleLabel.text = title
-        titleLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        titleLabel.font = UIFont.systemFont(ofSize: 13, weight: .medium)
         titleLabel.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let valueLabel = UILabel()
         valueLabel.text = "0"
-        valueLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        valueLabel.textColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
+        valueLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        valueLabel.textColor = color
         valueLabel.textAlignment = .center
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        card.addSubview(iconView)
+        card.addSubview(iconBackground)
+        iconBackground.addSubview(iconView)
         card.addSubview(titleLabel)
         card.addSubview(valueLabel)
         
         NSLayoutConstraint.activate([
-            iconView.topAnchor.constraint(equalTo: card.topAnchor, constant: 16),
-            iconView.centerXAnchor.constraint(equalTo: card.centerXAnchor),
-            iconView.widthAnchor.constraint(equalToConstant: 24),
-            iconView.heightAnchor.constraint(equalToConstant: 24),
+            iconBackground.topAnchor.constraint(equalTo: card.topAnchor, constant: 16),
+            iconBackground.centerXAnchor.constraint(equalTo: card.centerXAnchor),
+            iconBackground.widthAnchor.constraint(equalToConstant: 32),
+            iconBackground.heightAnchor.constraint(equalToConstant: 32),
             
-            titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 8),
+            iconView.centerXAnchor.constraint(equalTo: iconBackground.centerXAnchor),
+            iconView.centerYAnchor.constraint(equalTo: iconBackground.centerYAnchor),
+            iconView.widthAnchor.constraint(equalToConstant: 20),
+            iconView.heightAnchor.constraint(equalToConstant: 20),
+            
+            titleLabel.topAnchor.constraint(equalTo: iconBackground.bottomAnchor, constant: 12),
             titleLabel.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 8),
             titleLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -8),
             
-            valueLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            valueLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
             valueLabel.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 8),
             valueLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -8),
             valueLabel.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -16)
         ])
+        
+        // Gradient frame'i güncelle
+        DispatchQueue.main.async {
+            gradientLayer.frame = card.bounds
+        }
         
         return card
     }
@@ -327,10 +351,10 @@ class PetDetailViewController: UIViewController {
         buttonConfig.title = title
         buttonConfig.image = UIImage(systemName: icon)
         buttonConfig.imagePlacement = .top
-        buttonConfig.imagePadding = 8
-        buttonConfig.baseBackgroundColor = color.withAlphaComponent(0.1)
+        buttonConfig.imagePadding = 12
+        buttonConfig.baseBackgroundColor = color.withAlphaComponent(0.12)
         buttonConfig.baseForegroundColor = color
-        buttonConfig.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 12, bottom: 16, trailing: 12)
+        buttonConfig.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 16, bottom: 20, trailing: 16)
         buttonConfig.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
             outgoing.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
@@ -338,7 +362,15 @@ class PetDetailViewController: UIViewController {
         }
         
         button.configuration = buttonConfig
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = 20
+        button.layer.borderWidth = 1
+        button.layer.borderColor = color.withAlphaComponent(0.2).cgColor
+        
+        // Hover effect için shadow
+        button.layer.shadowColor = color.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 4)
+        button.layer.shadowOpacity = 0.15
+        button.layer.shadowRadius = 12
         
         return button
     }
@@ -348,27 +380,27 @@ class PetDetailViewController: UIViewController {
         actionsTitle.translatesAutoresizingMaskIntoConstraints = false
         actionsGrid.translatesAutoresizingMaskIntoConstraints = false
         
-        // Card styling
+        // Card styling - daha modern
         actionsCard.backgroundColor = .white
-        actionsCard.layer.cornerRadius = 20
+        actionsCard.layer.cornerRadius = 24
         actionsCard.layer.shadowColor = UIColor.black.cgColor
-        actionsCard.layer.shadowOffset = CGSize(width: 0, height: 4)
-        actionsCard.layer.shadowOpacity = 0.08
-        actionsCard.layer.shadowRadius = 16
+        actionsCard.layer.shadowOffset = CGSize(width: 0, height: 6)
+        actionsCard.layer.shadowOpacity = 0.1
+        actionsCard.layer.shadowRadius = 20
         
-        // Title
-        actionsTitle.text = "Hızlı İşlemler"
-        actionsTitle.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        // Title - daha modern
+        actionsTitle.text = "🚀 Hızlı İşlemler"
+        actionsTitle.font = UIFont.systemFont(ofSize: 22, weight: .bold)
         actionsTitle.textColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
         
         // Actions grid
         actionsGrid.axis = .horizontal
         actionsGrid.distribution = .fillEqually
-        actionsGrid.spacing = 16
+        actionsGrid.spacing = 20
         
-        let addRecordButton = createActionButton(title: "Sağlık Kaydı", icon: "plus.circle.fill", color: .systemBlue)
-        let addAppointmentButton = createActionButton(title: "Randevu", icon: "calendar.badge.plus", color: .systemGreen)
-        let editButton = createActionButton(title: "Düzenle", icon: "pencil.circle.fill", color: .systemOrange)
+        let addRecordButton = createActionButton(title: "Sağlık Kaydı", icon: "plus.circle.fill", color: UIColor(red: 0.2, green: 0.6, blue: 1.0, alpha: 1.0))
+        let addAppointmentButton = createActionButton(title: "Randevu", icon: "calendar.badge.plus", color: UIColor(red: 0.2, green: 0.8, blue: 0.4, alpha: 1.0))
+        let editButton = createActionButton(title: "Düzenle", icon: "pencil.circle.fill", color: UIColor(red: 0.9, green: 0.7, blue: 0.2, alpha: 1.0))
         
         addRecordButton.addTarget(self, action: #selector(addRecordTapped), for: .touchUpInside)
         addAppointmentButton.addTarget(self, action: #selector(addAppointmentTapped), for: .touchUpInside)
@@ -389,38 +421,38 @@ class PetDetailViewController: UIViewController {
         healthProgressView.translatesAutoresizingMaskIntoConstraints = false
         healthStatsStack.translatesAutoresizingMaskIntoConstraints = false
         
-        // Card styling
+        // Card styling - daha modern
         healthCard.backgroundColor = .white
-        healthCard.layer.cornerRadius = 20
+        healthCard.layer.cornerRadius = 24
         healthCard.layer.shadowColor = UIColor.black.cgColor
-        healthCard.layer.shadowOffset = CGSize(width: 0, height: 4)
-        healthCard.layer.shadowOpacity = 0.08
-        healthCard.layer.shadowRadius = 16
+        healthCard.layer.shadowOffset = CGSize(width: 0, height: 6)
+        healthCard.layer.shadowOpacity = 0.1
+        healthCard.layer.shadowRadius = 20
         
-        // Title with icon
-        healthTitle.text = "Sağlık Durumu"
-        healthTitle.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        // Title with icon - daha modern
+        healthTitle.text = "💚 Sağlık Durumu"
+        healthTitle.font = UIFont.systemFont(ofSize: 22, weight: .bold)
         healthTitle.textColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
         
         healthIcon.image = UIImage(systemName: "heart.fill")
-        healthIcon.tintColor = .systemRed
+        healthIcon.tintColor = UIColor(red: 0.9, green: 0.3, blue: 0.3, alpha: 1.0)
         healthIcon.contentMode = .scaleAspectFit
         
-        // Progress view
-        healthProgressView.progressTintColor = .systemGreen
-        healthProgressView.trackTintColor = UIColor.systemGreen.withAlphaComponent(0.2)
-        healthProgressView.layer.cornerRadius = 4
+        // Progress view - daha modern
+        healthProgressView.progressTintColor = UIColor(red: 0.2, green: 0.8, blue: 0.4, alpha: 1.0)
+        healthProgressView.trackTintColor = UIColor(red: 0.2, green: 0.8, blue: 0.4, alpha: 1.0).withAlphaComponent(0.2)
+        healthProgressView.layer.cornerRadius = 6
         healthProgressView.clipsToBounds = true
         healthProgressView.progress = 0.85
         
         // Stats stack
         healthStatsStack.axis = .horizontal
         healthStatsStack.distribution = .fillEqually
-        healthStatsStack.spacing = 20
+        healthStatsStack.spacing = 24
         
-        let lastCheckup = createHealthStat(title: "Son Kontrol", value: "2 hafta önce", color: .systemBlue)
-        let nextVaccine = createHealthStat(title: "Sonraki Aşı", value: "1 ay", color: .systemOrange)
-        let overallHealth = createHealthStat(title: "Genel Durum", value: "Mükemmel", color: .systemGreen)
+        let lastCheckup = createHealthStat(title: "Son Kontrol", value: "2 hafta önce", color: UIColor(red: 0.2, green: 0.6, blue: 1.0, alpha: 1.0))
+        let nextVaccine = createHealthStat(title: "Sonraki Aşı", value: "1 ay", color: UIColor(red: 0.9, green: 0.7, blue: 0.2, alpha: 1.0))
+        let overallHealth = createHealthStat(title: "Genel Durum", value: "Mükemmel", color: UIColor(red: 0.2, green: 0.8, blue: 0.4, alpha: 1.0))
         
         contentView.addSubview(healthCard)
         healthCard.addSubview(healthTitle)
@@ -471,21 +503,22 @@ class PetDetailViewController: UIViewController {
         recordsTitle.translatesAutoresizingMaskIntoConstraints = false
         recordsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        // Card styling
+        // Card styling - çok daha modern ve şık
         recordsCard.backgroundColor = .white
-        recordsCard.layer.cornerRadius = 20
+        recordsCard.layer.cornerRadius = 24
         recordsCard.layer.shadowColor = UIColor.black.cgColor
-        recordsCard.layer.shadowOffset = CGSize(width: 0, height: 4)
-        recordsCard.layer.shadowOpacity = 0.08
-        recordsCard.layer.shadowRadius = 16
+        recordsCard.layer.shadowOffset = CGSize(width: 0, height: 8)
+        recordsCard.layer.shadowOpacity = 0.12
+        recordsCard.layer.shadowRadius = 24
         
-        // Title
-        recordsTitle.text = "Son Sağlık Kayıtları"
-        recordsTitle.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        // Title - daha büyük ve dikkat çekici
+        recordsTitle.text = "🏥 Son Sağlık Kayıtları"
+        recordsTitle.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         recordsTitle.textColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
         
-        // Collection view
+        // Collection view - daha iyi görünüm
         recordsCollectionView.backgroundColor = .clear
+        recordsCollectionView.showsVerticalScrollIndicator = false
         recordsCollectionView.showsHorizontalScrollIndicator = false
         recordsCollectionView.register(HealthRecordCell.self, forCellWithReuseIdentifier: "HealthRecordCell")
         recordsCollectionView.delegate = self
@@ -495,23 +528,6 @@ class PetDetailViewController: UIViewController {
         recordsCard.addSubview(recordsTitle)
         recordsCard.addSubview(recordsCollectionView)
     }
-    
-    private func setupFAB() {
-        fabButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        fabButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        fabButton.tintColor = .white
-        fabButton.backgroundColor = DesignSystem.Colors.primary
-        fabButton.layer.cornerRadius = 28
-        fabButton.layer.shadowColor = UIColor.black.cgColor
-        fabButton.layer.shadowOffset = CGSize(width: 0, height: 4)
-        fabButton.layer.shadowOpacity = 0.2
-        fabButton.layer.shadowRadius = 12
-        fabButton.addTarget(self, action: #selector(fabTapped), for: .touchUpInside)
-        
-        view.addSubview(fabButton)
-    }
-
     
     // MARK: - Constraints
     private func setupConstraints() {
@@ -533,7 +549,7 @@ class PetDetailViewController: UIViewController {
             heroContainer.topAnchor.constraint(equalTo: contentView.topAnchor),
             heroContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             heroContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            heroContainer.heightAnchor.constraint(equalToConstant: 300),
+            heroContainer.heightAnchor.constraint(equalToConstant: 220),
             
             heroImageView.topAnchor.constraint(equalTo: heroContainer.topAnchor),
             heroImageView.leadingAnchor.constraint(equalTo: heroContainer.leadingAnchor),
@@ -546,20 +562,20 @@ class PetDetailViewController: UIViewController {
             heroOverlay.bottomAnchor.constraint(equalTo: heroContainer.bottomAnchor),
             
             // Pet Info Card
-            petInfoCard.topAnchor.constraint(equalTo: heroContainer.bottomAnchor, constant: -60),
+            petInfoCard.topAnchor.constraint(equalTo: heroContainer.bottomAnchor, constant: -50),
             petInfoCard.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             petInfoCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            petInfoCard.heightAnchor.constraint(equalToConstant: 200),
+            petInfoCard.heightAnchor.constraint(equalToConstant: 180),
             
-            petImageContainer.topAnchor.constraint(equalTo: petInfoCard.topAnchor, constant: -30),
+            petImageContainer.topAnchor.constraint(equalTo: petInfoCard.topAnchor, constant: -25),
             petImageContainer.centerXAnchor.constraint(equalTo: petInfoCard.centerXAnchor),
-            petImageContainer.widthAnchor.constraint(equalToConstant: 100),
-            petImageContainer.heightAnchor.constraint(equalToConstant: 100),
+            petImageContainer.widthAnchor.constraint(equalToConstant: 80),
+            petImageContainer.heightAnchor.constraint(equalToConstant: 80),
             
-            petImageView.topAnchor.constraint(equalTo: petImageContainer.topAnchor, constant: 2),
-            petImageView.leadingAnchor.constraint(equalTo: petImageContainer.leadingAnchor, constant: 2),
-            petImageView.trailingAnchor.constraint(equalTo: petImageContainer.trailingAnchor, constant: -2),
-            petImageView.bottomAnchor.constraint(equalTo: petImageContainer.bottomAnchor, constant: -2),
+            petImageView.topAnchor.constraint(equalTo: petImageContainer.topAnchor, constant: 2.5),
+            petImageView.leadingAnchor.constraint(equalTo: petImageContainer.leadingAnchor, constant: 2.5),
+            petImageView.trailingAnchor.constraint(equalTo: petImageContainer.trailingAnchor, constant: -2.5),
+            petImageView.bottomAnchor.constraint(equalTo: petImageContainer.bottomAnchor, constant: -2.5),
             
             nameLabel.topAnchor.constraint(equalTo: petImageContainer.bottomAnchor, constant: 16),
             nameLabel.leadingAnchor.constraint(equalTo: petInfoCard.leadingAnchor, constant: 20),
@@ -592,13 +608,13 @@ class PetDetailViewController: UIViewController {
             statsGrid.topAnchor.constraint(equalTo: petInfoCard.bottomAnchor, constant: 24),
             statsGrid.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             statsGrid.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            statsGrid.heightAnchor.constraint(equalToConstant: 100),
+            statsGrid.heightAnchor.constraint(equalToConstant: 120),
             
             // Actions Card
             actionsCard.topAnchor.constraint(equalTo: statsGrid.bottomAnchor, constant: 24),
             actionsCard.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             actionsCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            actionsCard.heightAnchor.constraint(equalToConstant: 140),
+            actionsCard.heightAnchor.constraint(equalToConstant: 160),
             
             actionsTitle.topAnchor.constraint(equalTo: actionsCard.topAnchor, constant: 20),
             actionsTitle.leadingAnchor.constraint(equalTo: actionsCard.leadingAnchor, constant: 20),
@@ -613,7 +629,7 @@ class PetDetailViewController: UIViewController {
             healthCard.topAnchor.constraint(equalTo: actionsCard.bottomAnchor, constant: 24),
             healthCard.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             healthCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            healthCard.heightAnchor.constraint(equalToConstant: 160),
+            healthCard.heightAnchor.constraint(equalToConstant: 180),
             
             healthTitle.topAnchor.constraint(equalTo: healthCard.topAnchor, constant: 20),
             healthTitle.leadingAnchor.constraint(equalTo: healthCard.leadingAnchor, constant: 20),
@@ -637,23 +653,17 @@ class PetDetailViewController: UIViewController {
             recordsCard.topAnchor.constraint(equalTo: healthCard.bottomAnchor, constant: 24),
             recordsCard.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             recordsCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            recordsCard.heightAnchor.constraint(equalToConstant: 200),
-            recordsCard.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -100),
+            recordsCard.heightAnchor.constraint(equalToConstant: 160),
+            recordsCard.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40),
             
             recordsTitle.topAnchor.constraint(equalTo: recordsCard.topAnchor, constant: 20),
             recordsTitle.leadingAnchor.constraint(equalTo: recordsCard.leadingAnchor, constant: 20),
             recordsTitle.trailingAnchor.constraint(equalTo: recordsCard.trailingAnchor, constant: -20),
             
-            recordsCollectionView.topAnchor.constraint(equalTo: recordsTitle.bottomAnchor, constant: 20),
-            recordsCollectionView.leadingAnchor.constraint(equalTo: recordsCard.leadingAnchor, constant: 20),
-            recordsCollectionView.trailingAnchor.constraint(equalTo: recordsCard.trailingAnchor, constant: -20),
-            recordsCollectionView.bottomAnchor.constraint(equalTo: recordsCard.bottomAnchor, constant: -20),
-            
-            // FAB
-            fabButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            fabButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            fabButton.widthAnchor.constraint(equalToConstant: 56),
-            fabButton.heightAnchor.constraint(equalToConstant: 56)
+            recordsCollectionView.topAnchor.constraint(equalTo: recordsTitle.bottomAnchor, constant: 16),
+            recordsCollectionView.leadingAnchor.constraint(equalTo: recordsCard.leadingAnchor, constant: 16),
+            recordsCollectionView.trailingAnchor.constraint(equalTo: recordsCard.trailingAnchor, constant: -16),
+            recordsCollectionView.bottomAnchor.constraint(equalTo: recordsCard.bottomAnchor, constant: -16)
         ])
     }
     
@@ -689,8 +699,19 @@ class PetDetailViewController: UIViewController {
             petImageView.image = UIImage(named: "pet") // Default image
         }
         
-        // Set hero background
-        heroImageView.image = petImageView.image
+        // Set hero background - hayvanlar.jpg kullan
+        if let hayvanlarImage = UIImage(named: "hayvanlar") {
+            heroImageView.image = hayvanlarImage
+            print("✅ Hayvanlar.jpg başarıyla yüklendi")
+        } else if let petYanimdaImage = UIImage(named: "petYanimda") {
+            // Fallback olarak petYanimda resmini kullan
+            heroImageView.image = petYanimdaImage
+            print("⚠️ Hayvanlar.jpg bulunamadı, petYanimda resmi kullanılıyor")
+        } else {
+            // Son fallback olarak pet resmini kullan
+            heroImageView.image = petImageView.image
+            print("⚠️ Hiçbir kapak resmi bulunamadı, pet resmi kullanılıyor")
+        }
     }
     
     // MARK: - Actions
@@ -699,34 +720,146 @@ class PetDetailViewController: UIViewController {
     }
     
     @objc private func moreOptionsTapped() {
-        // Show more options menu
+        // More options menu göster
+        let alert = UIAlertController(title: "⚙️ Daha Fazla Seçenek", message: "Ne yapmak istiyorsunuz?", preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "📸 Fotoğraf Değiştir", style: .default) { [weak self] _ in
+            // TODO: Fotoğraf değiştirme işlevi
+        })
+        
+        alert.addAction(UIAlertAction(title: "🗑️ Hayvanı Sil", style: .destructive) { [weak self] _ in
+            self?.showDeleteConfirmation()
+        })
+        
+        alert.addAction(UIAlertAction(title: "📤 Dışa Aktar", style: .default) { [weak self] _ in
+            // TODO: Dışa aktarma işlevi
+        })
+        
+        alert.addAction(UIAlertAction(title: "İptal", style: .cancel))
+        
+        // For iPad
+        if let popover = alert.popoverPresentationController {
+            popover.sourceView = view
+            popover.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
+        }
+        
+        present(alert, animated: true)
+    }
+    
+    private func showDeleteConfirmation() {
+        guard let pet = pet else { return }
+        
+        let alert = UIAlertController(title: "⚠️ Dikkat!", message: "\(pet.name) adlı hayvanı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "İptal", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Sil", style: .destructive) { [weak self] _ in
+            // Hayvanı sil
+            DataManager.shared.deletePet(pet)
+            
+            // Ana sayfaya dön
+            self?.navigationController?.popViewController(animated: true)
+        })
+        
+        present(alert, animated: true)
     }
     
     @objc private func favoriteTapped() {
         favoriteButton.isSelected.toggle()
-        // Update favorite status
+        
+        // Haptic feedback
+        let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+        impactFeedback.impactOccurred()
+        
+        // Animasyon ekle
+        UIView.animate(withDuration: 0.2, animations: {
+            self.favoriteButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        }) { _ in
+            UIView.animate(withDuration: 0.2) {
+                self.favoriteButton.transform = .identity
+            }
+        }
+        
+        // TODO: Favori durumunu kaydet
+        if favoriteButton.isSelected {
+            // Favoriye eklendi
+            print("\(pet?.name ?? "Hayvan") favorilere eklendi")
+        } else {
+            // Favorilerden çıkarıldı
+            print("\(pet?.name ?? "Hayvan") favorilerden çıkarıldı")
+        }
     }
     
     @objc private func addRecordTapped() {
-        // Navigate to add health record
+        guard let pet = pet else { return }
+        
+        // HealthRecordFormViewController'ı aç
+        let healthRecordFormVC = HealthRecordFormViewController()
+        healthRecordFormVC.pet = pet // Seçili hayvanı geçir
+        
+        let navController = UINavigationController(rootViewController: healthRecordFormVC)
+        navController.modalPresentationStyle = .pageSheet
+        
+        if let sheet = navController.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = true
+        }
+        
+        present(navController, animated: true)
     }
     
     @objc private func addAppointmentTapped() {
-        // Navigate to add appointment
+        guard let pet = pet else { return }
+        
+        // AppointmentFormViewController'ı aç
+        let appointmentFormVC = AppointmentFormViewController()
+        appointmentFormVC.pet = pet // Seçili hayvanı geçir
+        
+        let navController = UINavigationController(rootViewController: appointmentFormVC)
+        navController.modalPresentationStyle = .pageSheet
+        
+        if let sheet = navController.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = true
+        }
+        
+        present(navController, animated: true)
     }
     
     @objc private func editTapped() {
-        // Navigate to edit pet
-    }
-    
-    @objc private func fabTapped() {
-        // Show quick actions
+        guard let pet = pet else { return }
+        
+        // PetFormViewController'ı düzenleme modunda aç
+        let petFormVC = PetFormViewController()
+        petFormVC.pet = pet // Mevcut hayvan bilgilerini geçir
+        petFormVC.isEditMode = true // Düzenleme modunda olduğunu belirt
+        
+        // Düzenleme tamamlandığında verileri yeniden yükle
+        petFormVC.onEditCompleted = { [weak self] in
+            self?.loadPetData()
+        }
+        
+        let navController = UINavigationController(rootViewController: petFormVC)
+        navController.modalPresentationStyle = .pageSheet
+        
+        if let sheet = navController.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = true
+        }
+        
+        present(navController, animated: true)
     }
     
     private func loadRecentRecords() {
-        // Load recent health records for this pet
-        // This would typically come from a data manager
-        recentHealthRecords = []
+        guard let pet = pet else { return }
+        
+        // Bu hayvan için son sağlık kayıtlarını yükle
+        let allRecords = DataManager.shared.fetchHealthRecords()
+        let filteredRecords = allRecords.filter { $0.petId == pet.identifier }
+            .sorted { $0.recordDate > $1.recordDate }
+        
+        // Son 5 kaydı al ve Array'e dönüştür
+        recentHealthRecords = Array(filteredRecords.prefix(5))
+        
         recordsCollectionView.reloadData()
     }
     
@@ -746,9 +879,25 @@ extension PetDetailViewController: UICollectionViewDataSource, UICollectionViewD
         return recentHealthRecords.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = (collectionView.frame.width - 32) // 16 + 16 (margins)
+        return CGSize(width: width, height: 100)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HealthRecordCell", for: indexPath) as! HealthRecordCell
-        // Configure cell with health record data
+        let record = recentHealthRecords[indexPath.item]
+        cell.configure(with: record)
+        
+        // Staggered animation for cells
+        cell.alpha = 0
+        cell.transform = CGAffineTransform(translationX: 0, y: 30)
+        
+        UIView.animate(withDuration: 0.4, delay: Double(indexPath.item % 6) * 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: [], animations: {
+            cell.alpha = 1.0
+            cell.transform = .identity
+        })
+        
         return cell
     }
 }
@@ -767,9 +916,14 @@ extension PetDetailViewController: UIScrollViewDelegate {
 // MARK: - HealthRecordCell
 class HealthRecordCell: UICollectionViewCell {
     private let containerView = UIView()
+    private let leftBorderView = UIView()
+    private let iconContainer = UIView()
     private let iconView = UIImageView()
+    private let contentStackView = UIStackView()
     private let titleLabel = UILabel()
     private let dateLabel = UILabel()
+    private let veterinarianLabel = UILabel()
+    private let statusContainer = UIView()
     private let statusLabel = UILabel()
     
     override init(frame: CGRect) {
@@ -782,104 +936,164 @@ class HealthRecordCell: UICollectionViewCell {
     }
     
     private func setupUI() {
+        // Container styling - çok daha modern ve şık
         containerView.backgroundColor = .white
         containerView.layer.cornerRadius = 16
         containerView.layer.shadowColor = UIColor.black.cgColor
         containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
-        containerView.layer.shadowOpacity = 0.08
+        containerView.layer.shadowOpacity = 0.06
         containerView.layer.shadowRadius = 8
-        containerView.translatesAutoresizingMaskIntoConstraints = false
         
+        // Sol kenar çizgisi - renkli vurgu
+        leftBorderView.backgroundColor = UIColor(red: 0.2, green: 0.6, blue: 1.0, alpha: 1.0)
+        leftBorderView.layer.cornerRadius = 2
+        leftBorderView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Icon container - modern tasarım
+        iconContainer.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.0)
+        iconContainer.layer.cornerRadius = 12
+        iconContainer.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Icon
         iconView.contentMode = .scaleAspectFit
-        iconView.tintColor = .systemBlue
         iconView.translatesAutoresizingMaskIntoConstraints = false
         
+        // Content stack view
+        contentStackView.axis = .vertical
+        contentStackView.spacing = 4
+        contentStackView.alignment = .leading
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Title label - daha büyük ve okunabilir
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         titleLabel.textColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
+        titleLabel.numberOfLines = 2
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        dateLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        dateLabel.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+        // Date label - daha belirgin
+        dateLabel.font = UIFont.systemFont(ofSize: 13, weight: .medium)
+        dateLabel.textColor = UIColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1.0)
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        statusLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        // Veterinarian label - yeni eklenen
+        veterinarianLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        veterinarianLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0)
+        veterinarianLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Status container - daha modern
+        statusContainer.backgroundColor = UIColor(red: 0.2, green: 0.8, blue: 0.4, alpha: 1.0)
+        statusContainer.layer.cornerRadius = 10
+        statusContainer.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Status label
+        statusLabel.font = UIFont.systemFont(ofSize: 10, weight: .semibold)
         statusLabel.textColor = .white
-        statusLabel.backgroundColor = .systemGreen
-        statusLabel.layer.cornerRadius = 8
-        statusLabel.layer.masksToBounds = true
+        statusLabel.text = "Tamamlandı"
         statusLabel.textAlignment = .center
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        // Add subviews
         contentView.addSubview(containerView)
-        containerView.addSubview(iconView)
-        containerView.addSubview(titleLabel)
-        containerView.addSubview(dateLabel)
-        containerView.addSubview(statusLabel)
+        containerView.addSubview(leftBorderView)
+        containerView.addSubview(iconContainer)
+        iconContainer.addSubview(iconView)
+        containerView.addSubview(contentStackView)
+        contentStackView.addArrangedSubview(titleLabel)
+        contentStackView.addArrangedSubview(dateLabel)
+        contentStackView.addArrangedSubview(veterinarianLabel)
+        containerView.addSubview(statusContainer)
+        statusContainer.addSubview(statusLabel)
         
+        // Setup constraints
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
-            iconView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
-            iconView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
-            iconView.widthAnchor.constraint(equalToConstant: 32),
-            iconView.heightAnchor.constraint(equalToConstant: 32),
+            leftBorderView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            leftBorderView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            leftBorderView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            leftBorderView.widthAnchor.constraint(equalToConstant: 4),
             
-            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
-            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 12),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            iconContainer.leadingAnchor.constraint(equalTo: leftBorderView.trailingAnchor, constant: 12),
+            iconContainer.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            iconContainer.widthAnchor.constraint(equalToConstant: 40),
+            iconContainer.heightAnchor.constraint(equalToConstant: 40),
             
-            dateLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
-            dateLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 12),
-            dateLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            iconView.centerXAnchor.constraint(equalTo: iconContainer.centerXAnchor),
+            iconView.centerYAnchor.constraint(equalTo: iconContainer.centerYAnchor),
+            iconView.widthAnchor.constraint(equalToConstant: 20),
+            iconView.heightAnchor.constraint(equalToConstant: 20),
             
-            statusLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
-            statusLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 12),
-            statusLabel.widthAnchor.constraint(equalToConstant: 60),
-            statusLabel.heightAnchor.constraint(equalToConstant: 20)
+            contentStackView.leadingAnchor.constraint(equalTo: iconContainer.trailingAnchor, constant: 12),
+            contentStackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
+            contentStackView.trailingAnchor.constraint(equalTo: statusContainer.leadingAnchor, constant: -12),
+            contentStackView.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor, constant: -12),
+            
+            statusContainer.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
+            statusContainer.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            statusContainer.widthAnchor.constraint(equalToConstant: 65),
+            statusContainer.heightAnchor.constraint(equalToConstant: 20),
+            
+            statusLabel.centerXAnchor.constraint(equalTo: statusContainer.centerXAnchor),
+            statusLabel.centerYAnchor.constraint(equalTo: statusContainer.centerYAnchor)
         ])
     }
     
     func configure(with record: HealthRecordModel) {
         titleLabel.text = record.recordDescription
         dateLabel.text = formatDate(record.recordDate)
-        statusLabel.text = "Tamamlandı"
+        veterinarianLabel.text = record.veterinarian ?? "Veteriner belirtilmemiş"
         
-        // Set icon based on record type
+        // Set icon and color based on record type
         switch record.recordType {
         case .vaccination:
             iconView.image = UIImage(systemName: "syringe.fill")
-            iconView.tintColor = .systemGreen
+            iconView.tintColor = UIColor(red: 0.2, green: 0.8, blue: 0.4, alpha: 1.0)
+            leftBorderView.backgroundColor = UIColor(red: 0.2, green: 0.8, blue: 0.4, alpha: 1.0)
+            statusContainer.backgroundColor = UIColor(red: 0.2, green: 0.8, blue: 0.4, alpha: 1.0)
         case .checkup:
             iconView.image = UIImage(systemName: "stethoscope")
-            iconView.tintColor = .systemBlue
+            iconView.tintColor = UIColor(red: 0.2, green: 0.6, blue: 1.0, alpha: 1.0)
+            leftBorderView.backgroundColor = UIColor(red: 0.2, green: 0.6, blue: 1.0, alpha: 1.0)
+            statusContainer.backgroundColor = UIColor(red: 0.2, green: 0.6, blue: 1.0, alpha: 1.0)
         case .treatment:
             iconView.image = UIImage(systemName: "pills.fill")
-            iconView.tintColor = .systemOrange
+            iconView.tintColor = UIColor(red: 0.9, green: 0.4, blue: 0.2, alpha: 1.0)
+            leftBorderView.backgroundColor = UIColor(red: 0.9, green: 0.4, blue: 0.2, alpha: 1.0)
+            statusContainer.backgroundColor = UIColor(red: 0.9, green: 0.4, blue: 0.2, alpha: 1.0)
         case .surgery:
             iconView.image = UIImage(systemName: "scissors")
-            iconView.tintColor = .systemRed
+            iconView.tintColor = UIColor(red: 0.8, green: 0.4, blue: 0.9, alpha: 1.0)
+            leftBorderView.backgroundColor = UIColor(red: 0.8, green: 0.4, blue: 0.9, alpha: 1.0)
+            statusContainer.backgroundColor = UIColor(red: 0.8, green: 0.4, blue: 0.9, alpha: 1.0)
         case .emergency:
             iconView.image = UIImage(systemName: "exclamationmark.triangle.fill")
-            iconView.tintColor = .systemRed
+            iconView.tintColor = UIColor(red: 0.9, green: 0.3, blue: 0.3, alpha: 1.0)
+            leftBorderView.backgroundColor = UIColor(red: 0.9, green: 0.3, blue: 0.3, alpha: 1.0)
+            statusContainer.backgroundColor = UIColor(red: 0.9, green: 0.3, blue: 0.3, alpha: 1.0)
         case .grooming:
             iconView.image = UIImage(systemName: "scissors")
-            iconView.tintColor = .systemPurple
+            iconView.tintColor = UIColor(red: 0.9, green: 0.7, blue: 0.2, alpha: 1.0)
+            leftBorderView.backgroundColor = UIColor(red: 0.9, green: 0.7, blue: 0.2, alpha: 1.0)
+            statusContainer.backgroundColor = UIColor(red: 0.9, green: 0.7, blue: 0.2, alpha: 1.0)
         case .medication:
             iconView.image = UIImage(systemName: "pills.fill")
-            iconView.tintColor = .systemBlue
+            iconView.tintColor = UIColor(red: 0.6, green: 0.9, blue: 0.4, alpha: 1.0)
+            leftBorderView.backgroundColor = UIColor(red: 0.6, green: 0.9, blue: 0.4, alpha: 1.0)
+            statusContainer.backgroundColor = UIColor(red: 0.6, green: 0.9, blue: 0.4, alpha: 1.0)
         case .other:
             iconView.image = UIImage(systemName: "doc.text.fill")
-            iconView.tintColor = .systemGray
+            iconView.tintColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+            leftBorderView.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+            statusContainer.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
         }
     }
     
     private func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
+        formatter.dateFormat = "dd MMM yyyy, HH:mm"
         formatter.locale = Locale(identifier: "tr_TR")
         return formatter.string(from: date)
     }

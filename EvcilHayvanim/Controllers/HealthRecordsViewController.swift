@@ -16,6 +16,9 @@ public class HealthRecordsViewController: UIViewController {
     private let filterContainerView = UIView()
     private let currentFilterButton = UIButton()
     private let filterDropdownButton = UIButton()
+    private let petFilterContainerView = UIView()
+    private let petFilterButton = UIButton()
+    private let petFilterIconView = UIImageView()
     private let emptyStateView = UIView()
     private let emptyStateLabel = UILabel()
     private let emptyStateImageView = UIImageView()
@@ -38,6 +41,7 @@ public class HealthRecordsViewController: UIViewController {
     private var healthRecords: [HealthRecordModel] = []
     private var filteredRecords: [HealthRecordModel] = []
     private var selectedFilter: HealthRecordType? = nil
+    private var selectedPet: PetModel? = nil
     
     // MARK: - Initialization
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -77,6 +81,7 @@ public class HealthRecordsViewController: UIViewController {
         setupNavigationBar()
         setupSearchController()
         setupFilterContainer()
+        setupPetFilterContainer()
         setupCollectionView()
         setupFloatingActionButton()
         setupEmptyState()
@@ -152,6 +157,80 @@ public class HealthRecordsViewController: UIViewController {
         filterContainerView.addSubview(currentFilterButton)
         filterContainerView.addSubview(filterDropdownButton)
         view.addSubview(filterContainerView)
+    }
+    
+    private func setupPetFilterContainer() {
+        petFilterContainerView.translatesAutoresizingMaskIntoConstraints = false
+        petFilterButton.translatesAutoresizingMaskIntoConstraints = false
+        petFilterIconView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Container styling
+        petFilterContainerView.backgroundColor = DesignSystem.Colors.cardBackground
+        petFilterContainerView.layer.cornerRadius = 16
+        petFilterContainerView.layer.shadowColor = UIColor.black.cgColor
+        petFilterContainerView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        petFilterContainerView.layer.shadowOpacity = 0.1
+        petFilterContainerView.layer.shadowRadius = 8
+        
+        // Pet filter button
+        petFilterButton.setTitle("🐾 Tüm Hayvanlar", for: .normal)
+        petFilterButton.setTitleColor(DesignSystem.Colors.textPrimary, for: .normal)
+        petFilterButton.titleLabel?.font = DesignSystem.Typography.callout
+        petFilterButton.contentHorizontalAlignment = .left
+        petFilterButton.backgroundColor = DesignSystem.Colors.primary.withAlphaComponent(0.1)
+        petFilterButton.layer.cornerRadius = 12
+        
+        // Add border for better visual feedback
+        petFilterButton.layer.borderWidth = 1
+        petFilterButton.layer.borderColor = DesignSystem.Colors.primary.withAlphaComponent(0.3).cgColor
+        
+        // Add shadow to button
+        petFilterButton.layer.shadowColor = UIColor.black.cgColor
+        petFilterButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+        petFilterButton.layer.shadowOpacity = 0.1
+        petFilterButton.layer.shadowRadius = 4
+        
+        // Add shadow to container
+        petFilterContainerView.layer.shadowColor = UIColor.black.cgColor
+        petFilterContainerView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        petFilterContainerView.layer.shadowOpacity = 0.1
+        petFilterContainerView.layer.shadowRadius = 4
+        
+        // Add shadow to icon
+        petFilterIconView.layer.shadowColor = UIColor.black.cgColor
+        petFilterIconView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        petFilterIconView.layer.shadowOpacity = 0.1
+        petFilterIconView.layer.shadowRadius = 4
+        
+        // iOS 15+ uyumlu padding ayarı
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.plain()
+            config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0)
+            petFilterButton.configuration = config
+        } else {
+            // iOS 15 öncesi için eski yöntem
+            petFilterButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+        }
+        
+        petFilterButton.addTarget(self, action: #selector(showPetFilterMenu), for: .touchUpInside)
+        
+        // Pet filter icon
+        petFilterIconView.image = UIImage(systemName: "pawprint.fill")
+        petFilterIconView.tintColor = DesignSystem.Colors.primary
+        petFilterIconView.contentMode = .scaleAspectFit
+        petFilterIconView.backgroundColor = DesignSystem.Colors.primary.withAlphaComponent(0.1)
+        petFilterIconView.layer.cornerRadius = 12
+        
+        // Add padding to icon
+        petFilterIconView.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        
+        // Add border to icon
+        petFilterIconView.layer.borderWidth = 1
+        petFilterIconView.layer.borderColor = DesignSystem.Colors.primary.withAlphaComponent(0.3).cgColor
+        
+        petFilterContainerView.addSubview(petFilterIconView)
+        petFilterContainerView.addSubview(petFilterButton)
+        view.addSubview(petFilterContainerView)
     }
     
     private func updateCurrentFilterButton() {
@@ -263,6 +342,89 @@ public class HealthRecordsViewController: UIViewController {
         impactFeedback.impactOccurred()
     }
     
+    @objc private func showPetFilterMenu() {
+        let alert = UIAlertController(title: "🐾 Hayvan Seçin", message: "Hangi hayvanın sağlık kayıtlarını görmek istiyorsunuz?", preferredStyle: .actionSheet)
+        
+        // Add "All Pets" option
+        let allPetsAction = UIAlertAction(title: "🐾 Tüm Hayvanlar", style: .default) { [weak self] _ in
+            self?.selectPetFilter(nil)
+        }
+        alert.addAction(allPetsAction)
+        
+        // Add individual pet options
+        for pet in DataManager.shared.fetchPets() {
+            let action = UIAlertAction(title: "\(getPetEmoji(for: pet.petType)) \(pet.name)", style: .default) { [weak self] _ in
+                self?.selectPetFilter(pet)
+            }
+            alert.addAction(action)
+        }
+        
+        alert.addAction(UIAlertAction(title: "İptal", style: .cancel))
+        
+        // For iPad
+        if let popover = alert.popoverPresentationController {
+            popover.sourceView = petFilterContainerView
+            popover.sourceRect = petFilterContainerView.bounds
+            popover.permittedArrowDirections = .up
+        }
+        
+        present(alert, animated: true)
+        
+        // Haptic feedback
+        let impactFeedback = UIImpactFeedbackGenerator(style: .light)
+        impactFeedback.impactOccurred()
+    }
+    
+    private func selectPetFilter(_ pet: PetModel?) {
+        selectedPet = pet
+        
+        if let pet = pet {
+            petFilterButton.setTitle("\(getPetEmoji(for: pet.petType)) \(pet.name)", for: .normal)
+            petFilterButton.backgroundColor = DesignSystem.Colors.primary.withAlphaComponent(0.2)
+            petFilterButton.layer.borderColor = DesignSystem.Colors.primary.withAlphaComponent(0.5).cgColor
+            petFilterIconView.backgroundColor = DesignSystem.Colors.primary.withAlphaComponent(0.2)
+            petFilterIconView.layer.borderColor = DesignSystem.Colors.primary.withAlphaComponent(0.5).cgColor
+            petFilterIconView.tintColor = DesignSystem.Colors.primary
+            
+            print("Pet filter selected: \(pet.name) (ID: \(pet.identifier))")
+        } else {
+            petFilterButton.setTitle("🐾 Tüm Hayvanlar", for: .normal)
+            petFilterButton.backgroundColor = DesignSystem.Colors.primary.withAlphaComponent(0.1)
+            petFilterButton.layer.borderColor = DesignSystem.Colors.primary.withAlphaComponent(0.3).cgColor
+            petFilterIconView.backgroundColor = DesignSystem.Colors.primary.withAlphaComponent(0.1)
+            petFilterIconView.layer.borderColor = DesignSystem.Colors.primary.withAlphaComponent(0.3).cgColor
+            petFilterIconView.tintColor = DesignSystem.Colors.primary
+            
+            print("Pet filter cleared: showing all pets")
+        }
+        
+        // Apply filters with animation
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: [], animations: {
+            self.collectionView.alpha = 0.7
+        }) { _ in
+            self.applyFilters()
+            UIView.animate(withDuration: 0.3, animations: {
+                self.collectionView.alpha = 1.0
+            })
+        }
+        
+        // Haptic feedback
+        let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+        impactFeedback.impactOccurred()
+    }
+    
+    private func getPetEmoji(for petType: PetType) -> String {
+        switch petType {
+        case .dog: return "🐕"
+        case .cat: return "🐱"
+        case .bird: return "🐦"
+        case .fish: return "🐠"
+        case .rabbit: return "🐰"
+        case .hamster: return "🐹"
+        case .other: return "🐾"
+        }
+    }
+    
     private func setupCollectionView() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
@@ -349,8 +511,24 @@ public class HealthRecordsViewController: UIViewController {
             filterDropdownButton.trailingAnchor.constraint(equalTo: filterContainerView.trailingAnchor),
             filterDropdownButton.widthAnchor.constraint(equalToConstant: 30),
             
+            // Pet Filter Container
+            petFilterContainerView.topAnchor.constraint(equalTo: filterContainerView.bottomAnchor, constant: 8),
+            petFilterContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            petFilterContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            petFilterContainerView.heightAnchor.constraint(equalToConstant: 56),
+            
+            petFilterIconView.leadingAnchor.constraint(equalTo: petFilterContainerView.leadingAnchor, constant: 16),
+            petFilterIconView.centerYAnchor.constraint(equalTo: petFilterContainerView.centerYAnchor),
+            petFilterIconView.widthAnchor.constraint(equalToConstant: 24),
+            petFilterIconView.heightAnchor.constraint(equalToConstant: 24),
+            
+            petFilterButton.topAnchor.constraint(equalTo: petFilterContainerView.topAnchor),
+            petFilterButton.leadingAnchor.constraint(equalTo: petFilterIconView.trailingAnchor, constant: 12),
+            petFilterButton.trailingAnchor.constraint(equalTo: petFilterContainerView.trailingAnchor, constant: -16),
+            petFilterButton.bottomAnchor.constraint(equalTo: petFilterContainerView.bottomAnchor),
+            
             // Collection View
-            collectionView.topAnchor.constraint(equalTo: filterContainerView.bottomAnchor, constant: 8),
+            collectionView.topAnchor.constraint(equalTo: petFilterContainerView.bottomAnchor, constant: 8),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -394,9 +572,22 @@ public class HealthRecordsViewController: UIViewController {
     private func applyFilters() {
         var filtered = healthRecords
         
+        print("Applying filters - Total records: \(healthRecords.count)")
+        
+        // Apply pet filter
+        if let selectedPet = selectedPet {
+            filtered = filtered.filter { $0.petId == selectedPet.identifier }
+            print("Pet filter applied for \(selectedPet.name): \(filtered.count) records remaining")
+        } else {
+            print("No pet filter applied")
+        }
+        
         // Apply type filter
         if let selectedFilter = selectedFilter {
             filtered = filtered.filter { $0.recordType == selectedFilter }
+            print("Type filter applied for \(selectedFilter.rawValue): \(filtered.count) records remaining")
+        } else {
+            print("No type filter applied")
         }
         
         // Apply search filter
@@ -406,9 +597,12 @@ public class HealthRecordsViewController: UIViewController {
                 record.veterinarian?.localizedCaseInsensitiveContains(searchText) == true ||
                 record.recordType.rawValue.localizedCaseInsensitiveContains(searchText)
             }
+            print("Search filter applied for '\(searchText)': \(filtered.count) records remaining")
         }
         
         filteredRecords = filtered.sorted { $0.recordDate > $1.recordDate }
+        
+        print("Final filtered records: \(filteredRecords.count)")
         
         // Update empty state
         emptyStateView.isHidden = !filteredRecords.isEmpty
@@ -424,16 +618,27 @@ public class HealthRecordsViewController: UIViewController {
         let currentFilter = filterTypes[currentFilterIndex]
         let filterName = currentFilter.title
         
+        var petFilterName = "tüm hayvanlar"
+        if let selectedPet = selectedPet {
+            petFilterName = selectedPet.name
+        }
+        
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            emptyStateLabel.text = "'\(searchText)' için\n\(filterName) kategorisinde\nsonuç bulunamadı\n\nFarklı kelimeler\ndeneyin 🔍"
+            emptyStateLabel.text = "'\(searchText)' için\n\(filterName) kategorisinde\n\(petFilterName) için\nsonuç bulunamadı\n\nFarklı kelimeler\ndeneyin 🔍"
         } else {
-            emptyStateLabel.text = "Henüz \(filterName) kaydı yok\n\n+ butonuna tıklayarak\nilk kaydınızı ekleyin! 🏥"
+            emptyStateLabel.text = "Henüz \(filterName) kaydı yok\n\n\(petFilterName) için\n+ butonuna tıklayarak\nilk kaydınızı ekleyin! 🏥"
         }
     }
     
     // MARK: - Actions
     @objc private func addHealthRecordTapped() {
         let healthRecordFormVC = HealthRecordFormViewController()
+        
+        // Pass selected pet if any
+        if let selectedPet = selectedPet {
+            healthRecordFormVC.pet = selectedPet
+        }
+        
         let navController = UINavigationController(rootViewController: healthRecordFormVC)
         navController.modalPresentationStyle = .pageSheet
         

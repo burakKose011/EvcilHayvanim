@@ -10,16 +10,28 @@ import CoreData
 import UIKit
 
 // MARK: - Pet Models
-struct PetModel {
-    let identifier: UUID
-    var name: String
-    var petType: PetType
-    var breed: String
-    var birthDate: Date
-    var weight: Double
-    var gender: Gender
-    var microchipNumber: String?
-    var photoURL: URL?
+public struct PetModel {
+    public let identifier: UUID
+    public var name: String
+    public var petType: PetType
+    public var breed: String
+    public var birthDate: Date
+    public var weight: Double
+    public var gender: Gender
+    public var microchipNumber: String?
+    public var photoURL: URL?
+    
+    public init(identifier: UUID, name: String, petType: PetType, breed: String, birthDate: Date, weight: Double, gender: Gender, microchipNumber: String?, photoURL: URL?) {
+        self.identifier = identifier
+        self.name = name
+        self.petType = petType
+        self.breed = breed
+        self.birthDate = birthDate
+        self.weight = weight
+        self.gender = gender
+        self.microchipNumber = microchipNumber
+        self.photoURL = photoURL
+    }
 }
 
 public enum PetType: String, CaseIterable {
@@ -50,14 +62,24 @@ public enum Gender: String, CaseIterable {
 }
 
 // MARK: - Health Record Models
-struct HealthRecordModel {
-    let identifier: UUID
-    let petId: UUID
-    let recordDate: Date
-    let recordType: HealthRecordType
-    let recordDescription: String
-    let veterinarian: String?
-    let attachments: [URL]
+public struct HealthRecordModel {
+    public let identifier: UUID
+    public let petId: UUID
+    public let recordDate: Date
+    public let recordType: HealthRecordType
+    public let recordDescription: String
+    public let veterinarian: String?
+    public let attachments: [URL]
+    
+    public init(identifier: UUID, petId: UUID, recordDate: Date, recordType: HealthRecordType, recordDescription: String, veterinarian: String?, attachments: [URL]) {
+        self.identifier = identifier
+        self.petId = petId
+        self.recordDate = recordDate
+        self.recordType = recordType
+        self.recordDescription = recordDescription
+        self.veterinarian = veterinarian
+        self.attachments = attachments
+    }
 }
 
 public enum HealthRecordType: String, CaseIterable {
@@ -72,15 +94,26 @@ public enum HealthRecordType: String, CaseIterable {
 }
 
 // MARK: - Appointment Models
-struct AppointmentModel {
-    let identifier: UUID
-    let petId: UUID
-    let petName: String
-    let appointmentDate: Date
-    let veterinarian: String
-    let reason: String
-    let notes: String?
-    var status: AppointmentStatus
+public struct AppointmentModel {
+    public let identifier: UUID
+    public let petId: UUID
+    public let petName: String
+    public let appointmentDate: Date
+    public let veterinarian: String
+    public let reason: String
+    public let notes: String?
+    public var status: AppointmentStatus
+    
+    public init(identifier: UUID, petId: UUID, petName: String, appointmentDate: Date, veterinarian: String, reason: String, notes: String?, status: AppointmentStatus) {
+        self.identifier = identifier
+        self.petId = petId
+        self.petName = petName
+        self.appointmentDate = appointmentDate
+        self.veterinarian = veterinarian
+        self.reason = reason
+        self.notes = notes
+        self.status = status
+    }
 }
 
 public enum AppointmentStatus: String, CaseIterable {
@@ -90,11 +123,18 @@ public enum AppointmentStatus: String, CaseIterable {
 }
 
 // MARK: - Reminder Models
-struct ReminderModel {
-    let identifier: UUID
-    let title: String
-    let reminderDate: Date
-    let reminderType: ReminderType
+public struct ReminderModel {
+    public let identifier: UUID
+    public let title: String
+    public let reminderDate: Date
+    public let reminderType: ReminderType
+    
+    public init(identifier: UUID, title: String, reminderDate: Date, reminderType: ReminderType) {
+        self.identifier = identifier
+        self.title = title
+        self.reminderDate = reminderDate
+        self.reminderType = reminderType
+    }
 }
 
 public enum ReminderType {
@@ -122,7 +162,7 @@ public class DataManager {
     }
     
     // MARK: - Pet Operations
-    func savePet(_ pet: PetModel) {
+    public func savePet(_ pet: PetModel) {
         // For now, just add to mock data
         if let index = pets.firstIndex(where: { $0.identifier == pet.identifier }) {
             pets[index] = pet
@@ -132,7 +172,7 @@ public class DataManager {
         print("Pet saved: \(pet.name)")
     }
     
-    func fetchPets() -> [PetModel] {
+    public func fetchPets() -> [PetModel] {
         // Return mock data for now
         if pets.isEmpty {
             pets = [
@@ -144,7 +184,7 @@ public class DataManager {
         return pets
     }
     
-    func deletePet(_ pet: PetModel) {
+    public func deletePet(_ pet: PetModel) {
         pets.removeAll { $0.identifier == pet.identifier }
         print("Pet deleted: \(pet.name)")
     }
@@ -163,38 +203,44 @@ public class DataManager {
     func fetchHealthRecords(for petId: UUID? = nil) -> [HealthRecordModel] {
         // Return mock data for now
         if healthRecords.isEmpty {
+            // Önce hayvanları al
+            let pets = fetchPets()
+            let boncukId = pets.first(where: { $0.name == "Boncuk" })?.identifier ?? UUID()
+            let karabasId = pets.first(where: { $0.name == "Karabaş" })?.identifier ?? UUID()
+            let mavisId = pets.first(where: { $0.name == "Maviş" })?.identifier ?? UUID()
+            
             healthRecords = [
                 // Vaccination examples
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-7*24*60*60), recordType: HealthRecordType.vaccination, recordDescription: "Kuduz aşısı yapıldı", veterinarian: "Dr. Ahmet Yılmaz", attachments: []),
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-21*24*60*60), recordType: HealthRecordType.vaccination, recordDescription: "Karma aşı (5'li) uygulandı", veterinarian: "Dr. Fatma Öz", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: boncukId, recordDate: Date().addingTimeInterval(-7*24*60*60), recordType: HealthRecordType.vaccination, recordDescription: "Kuduz aşısı yapıldı", veterinarian: "Dr. Ahmet Yılmaz", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: karabasId, recordDate: Date().addingTimeInterval(-21*24*60*60), recordType: HealthRecordType.vaccination, recordDescription: "Karma aşı (5'li) uygulandı", veterinarian: "Dr. Fatma Öz", attachments: []),
                 
                 // Checkup examples
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-14*24*60*60), recordType: HealthRecordType.checkup, recordDescription: "Genel sağlık kontrolü yapıldı", veterinarian: "Dr. Ayşe Demir", attachments: []),
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-45*24*60*60), recordType: HealthRecordType.checkup, recordDescription: "Yıllık rutin kontrol", veterinarian: "Dr. Can Özkan", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: boncukId, recordDate: Date().addingTimeInterval(-14*24*60*60), recordType: HealthRecordType.checkup, recordDescription: "Genel sağlık kontrolü yapıldı", veterinarian: "Dr. Ayşe Demir", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: karabasId, recordDate: Date().addingTimeInterval(-45*24*60*60), recordType: HealthRecordType.checkup, recordDescription: "Yıllık rutin kontrol", veterinarian: "Dr. Can Özkan", attachments: []),
                 
                 // Treatment examples
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-30*24*60*60), recordType: HealthRecordType.treatment, recordDescription: "Kulak enfeksiyonu tedavisi", veterinarian: "Dr. Mehmet Kaya", attachments: []),
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-60*24*60*60), recordType: HealthRecordType.treatment, recordDescription: "Deri alerjisi tedavisi başlatıldı", veterinarian: "Dr. Zeynep Acar", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: karabasId, recordDate: Date().addingTimeInterval(-30*24*60*60), recordType: HealthRecordType.treatment, recordDescription: "Kulak enfeksiyonu tedavisi", veterinarian: "Dr. Mehmet Kaya", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: boncukId, recordDate: Date().addingTimeInterval(-60*24*60*60), recordType: HealthRecordType.treatment, recordDescription: "Deri alerjisi tedavisi başlatıldı", veterinarian: "Dr. Zeynep Acar", attachments: []),
                 
                 // Emergency examples
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-3*24*60*60), recordType: HealthRecordType.emergency, recordDescription: "Acil müdahale - Zehirlenme şüphesi", veterinarian: "Dr. Emre Kılıç", attachments: []),
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-90*24*60*60), recordType: HealthRecordType.emergency, recordDescription: "Trafik kazası sonrası acil müdahale", veterinarian: "Dr. Selin Yıldız", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: karabasId, recordDate: Date().addingTimeInterval(-3*24*60*60), recordType: HealthRecordType.emergency, recordDescription: "Acil müdahale - Zehirlenme şüphesi", veterinarian: "Dr. Emre Kılıç", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: mavisId, recordDate: Date().addingTimeInterval(-90*24*60*60), recordType: HealthRecordType.emergency, recordDescription: "Trafik kazası sonrası acil müdahale", veterinarian: "Dr. Selin Yıldız", attachments: []),
                 
                 // Grooming examples
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-10*24*60*60), recordType: HealthRecordType.grooming, recordDescription: "Tırnak kesimi ve tüy bakımı", veterinarian: "Bakım Uzmanı Aylin", attachments: []),
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-35*24*60*60), recordType: HealthRecordType.grooming, recordDescription: "Diş temizliği ve ağız bakımı", veterinarian: "Dr. Oğuz Demir", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: boncukId, recordDate: Date().addingTimeInterval(-10*24*60*60), recordType: HealthRecordType.grooming, recordDescription: "Tırnak kesimi ve tüy bakımı", veterinarian: "Bakım Uzmanı Aylin", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: karabasId, recordDate: Date().addingTimeInterval(-35*24*60*60), recordType: HealthRecordType.grooming, recordDescription: "Diş temizliği ve ağız bakımı", veterinarian: "Dr. Oğuz Demir", attachments: []),
                 
                 // Surgery examples
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-120*24*60*60), recordType: HealthRecordType.surgery, recordDescription: "Kısırlaştırma operasyonu", veterinarian: "Dr. Murat Şahin", attachments: []),
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-200*24*60*60), recordType: HealthRecordType.surgery, recordDescription: "Tümör çıkarma operasyonu", veterinarian: "Dr. Elif Koç", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: karabasId, recordDate: Date().addingTimeInterval(-120*24*60*60), recordType: HealthRecordType.surgery, recordDescription: "Kısırlaştırma operasyonu", veterinarian: "Dr. Murat Şahin", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: boncukId, recordDate: Date().addingTimeInterval(-200*24*60*60), recordType: HealthRecordType.surgery, recordDescription: "Tümör çıkarma operasyonu", veterinarian: "Dr. Elif Koç", attachments: []),
                 
                 // Medication examples
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-5*24*60*60), recordType: HealthRecordType.medication, recordDescription: "Antibiyotik tedavisi başlatıldı", veterinarian: "Dr. Ayşe Demir", attachments: []),
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-25*24*60*60), recordType: HealthRecordType.medication, recordDescription: "Ağrı kesici ilaç reçete edildi", veterinarian: "Dr. Kemal Arslan", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: boncukId, recordDate: Date().addingTimeInterval(-5*24*60*60), recordType: HealthRecordType.medication, recordDescription: "Antibiyotik tedavisi başlatıldı", veterinarian: "Dr. Ayşe Demir", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: mavisId, recordDate: Date().addingTimeInterval(-25*24*60*60), recordType: HealthRecordType.medication, recordDescription: "Ağrı kesici ilaç reçete edildi", veterinarian: "Dr. Kemal Arslan", attachments: []),
                 
                 // Other examples
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-50*24*60*60), recordType: HealthRecordType.other, recordDescription: "Beslenme danışmanlığı alındı", veterinarian: "Beslenme Uzmanı Dr. Pınar", attachments: []),
-                HealthRecordModel(identifier: UUID(), petId: UUID(), recordDate: Date().addingTimeInterval(-80*24*60*60), recordType: HealthRecordType.other, recordDescription: "Davranış terapisi seansı", veterinarian: "Davranış Uzmanı Dr. Cem", attachments: [])
+                HealthRecordModel(identifier: UUID(), petId: karabasId, recordDate: Date().addingTimeInterval(-50*24*60*60), recordType: HealthRecordType.other, recordDescription: "Beslenme danışmanlığı alındı", veterinarian: "Beslenme Uzmanı Dr. Pınar", attachments: []),
+                HealthRecordModel(identifier: UUID(), petId: mavisId, recordDate: Date().addingTimeInterval(-80*24*60*60), recordType: HealthRecordType.other, recordDescription: "Davranış terapisi seansı", veterinarian: "Davranış Uzmanı Dr. Cem", attachments: [])
             ]
         }
         
@@ -312,103 +358,103 @@ extension ReminderType: RawRepresentable {
 }
 
 // MARK: - Design System
-struct DesignSystem {
+public struct DesignSystem {
     
     // MARK: - Colors
-    struct Colors {
+    public struct Colors {
         // Primary Colors - Tatlı ve canlı renkler
-        static let primary = UIColor(red: 0.98, green: 0.6, blue: 0.4, alpha: 1.0) // Somon pembe
-        static let primaryDark = UIColor(red: 0.9, green: 0.4, blue: 0.3, alpha: 1.0)
-        static let primaryLight = UIColor(red: 1.0, green: 0.8, blue: 0.7, alpha: 1.0)
+        public static let primary = UIColor(red: 0.98, green: 0.6, blue: 0.4, alpha: 1.0) // Somon pembe
+        public static let primaryDark = UIColor(red: 0.9, green: 0.4, blue: 0.3, alpha: 1.0)
+        public static let primaryLight = UIColor(red: 1.0, green: 0.8, blue: 0.7, alpha: 1.0)
         
         // Secondary Colors
-        static let secondary = UIColor(red: 0.4, green: 0.8, blue: 0.9, alpha: 1.0) // Açık mavi
-        static let secondaryDark = UIColor(red: 0.2, green: 0.6, blue: 0.8, alpha: 1.0)
-        static let secondaryLight = UIColor(red: 0.8, green: 0.95, blue: 1.0, alpha: 1.0)
+        public static let secondary = UIColor(red: 0.4, green: 0.8, blue: 0.9, alpha: 1.0) // Açık mavi
+        public static let secondaryDark = UIColor(red: 0.2, green: 0.6, blue: 0.8, alpha: 1.0)
+        public static let secondaryLight = UIColor(red: 0.8, green: 0.95, blue: 1.0, alpha: 1.0)
         
         // Accent Colors - Hayvan temalı
-        static let accent1 = UIColor(red: 0.9, green: 0.7, blue: 0.2, alpha: 1.0) // Altın sarısı
-        static let accent2 = UIColor(red: 0.6, green: 0.9, blue: 0.4, alpha: 1.0) // Taze yeşil
-        static let accent3 = UIColor(red: 0.8, green: 0.4, blue: 0.9, alpha: 1.0) // Lavanta
-        static let accent4 = UIColor(red: 0.9, green: 0.5, blue: 0.7, alpha: 1.0) // Pembe
+        public static let accent1 = UIColor(red: 0.9, green: 0.7, blue: 0.2, alpha: 1.0) // Altın sarısı
+        public static let accent2 = UIColor(red: 0.6, green: 0.9, blue: 0.4, alpha: 1.0) // Taze yeşil
+        public static let accent3 = UIColor(red: 0.8, green: 0.4, blue: 0.9, alpha: 1.0) // Lavanta
+        public static let accent4 = UIColor(red: 0.9, green: 0.5, blue: 0.7, alpha: 1.0) // Pembe
         
         // Background Colors
-        static let background = UIColor(red: 0.98, green: 0.98, blue: 1.0, alpha: 1.0)
-        static let cardBackground = UIColor.white
-        static let surfaceBackground = UIColor(red: 0.95, green: 0.97, blue: 1.0, alpha: 1.0)
+        public static let background = UIColor(red: 0.98, green: 0.98, blue: 1.0, alpha: 1.0)
+        public static let cardBackground = UIColor.white
+        public static let surfaceBackground = UIColor(red: 0.95, green: 0.97, blue: 1.0, alpha: 1.0)
         
         // Text Colors
-        static let textPrimary = UIColor(red: 0.2, green: 0.2, blue: 0.3, alpha: 1.0)
-        static let textSecondary = UIColor(red: 0.5, green: 0.5, blue: 0.6, alpha: 1.0)
-        static let textLight = UIColor.white
+        public static let textPrimary = UIColor(red: 0.2, green: 0.2, blue: 0.3, alpha: 1.0)
+        public static let textSecondary = UIColor(red: 0.5, green: 0.5, blue: 0.6, alpha: 1.0)
+        public static let textLight = UIColor.white
         
         // Status Colors
-        static let success = UIColor(red: 0.3, green: 0.8, blue: 0.5, alpha: 1.0)
-        static let warning = UIColor(red: 1.0, green: 0.7, blue: 0.2, alpha: 1.0)
-        static let error = UIColor(red: 0.9, green: 0.3, blue: 0.3, alpha: 1.0)
-        static let info = UIColor(red: 0.3, green: 0.7, blue: 0.9, alpha: 1.0)
+        public static let success = UIColor(red: 0.3, green: 0.8, blue: 0.5, alpha: 1.0)
+        public static let warning = UIColor(red: 1.0, green: 0.7, blue: 0.2, alpha: 1.0)
+        public static let error = UIColor(red: 0.9, green: 0.3, blue: 0.3, alpha: 1.0)
+        public static let info = UIColor(red: 0.3, green: 0.7, blue: 0.9, alpha: 1.0)
     }
     
     // MARK: - Typography
-    struct Typography {
+    public struct Typography {
         // Headings
-        static let largeTitle = UIFont.systemFont(ofSize: 34, weight: .bold)
-        static let title1 = UIFont.systemFont(ofSize: 28, weight: .bold)
-        static let title2 = UIFont.systemFont(ofSize: 22, weight: .bold)
-        static let title3 = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        public static let largeTitle = UIFont.systemFont(ofSize: 34, weight: .bold)
+        public static let title1 = UIFont.systemFont(ofSize: 28, weight: .bold)
+        public static let title2 = UIFont.systemFont(ofSize: 22, weight: .bold)
+        public static let title3 = UIFont.systemFont(ofSize: 20, weight: .semibold)
         
         // Body Text
-        static let headline = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        static let body = UIFont.systemFont(ofSize: 17, weight: .regular)
-        static let bodyBold = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        static let callout = UIFont.systemFont(ofSize: 16, weight: .regular)
-        static let subheadline = UIFont.systemFont(ofSize: 15, weight: .regular)
-        static let footnote = UIFont.systemFont(ofSize: 13, weight: .regular)
-        static let caption1 = UIFont.systemFont(ofSize: 12, weight: .regular)
-        static let caption2 = UIFont.systemFont(ofSize: 11, weight: .regular)
+        public static let headline = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        public static let body = UIFont.systemFont(ofSize: 17, weight: .regular)
+        public static let bodyBold = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        public static let callout = UIFont.systemFont(ofSize: 16, weight: .regular)
+        public static let subheadline = UIFont.systemFont(ofSize: 15, weight: .regular)
+        public static let footnote = UIFont.systemFont(ofSize: 13, weight: .regular)
+        public static let caption1 = UIFont.systemFont(ofSize: 12, weight: .regular)
+        public static let caption2 = UIFont.systemFont(ofSize: 11, weight: .regular)
         
         // Custom Fonts
-        static let cardTitle = UIFont.systemFont(ofSize: 18, weight: .bold)
-        static let cardSubtitle = UIFont.systemFont(ofSize: 14, weight: .medium)
-        static let buttonTitle = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        public static let cardTitle = UIFont.systemFont(ofSize: 18, weight: .bold)
+        public static let cardSubtitle = UIFont.systemFont(ofSize: 14, weight: .medium)
+        public static let buttonTitle = UIFont.systemFont(ofSize: 16, weight: .semibold)
     }
     
     // MARK: - Spacing
-    struct Spacing {
-        static let xs: CGFloat = 4
-        static let sm: CGFloat = 8
-        static let md: CGFloat = 16
-        static let lg: CGFloat = 24
-        static let xl: CGFloat = 32
-        static let xxl: CGFloat = 48
+    public struct Spacing {
+        public static let xs: CGFloat = 4
+        public static let sm: CGFloat = 8
+        public static let md: CGFloat = 16
+        public static let lg: CGFloat = 24
+        public static let xl: CGFloat = 32
+        public static let xxl: CGFloat = 48
     }
     
     // MARK: - Corner Radius
-    struct CornerRadius {
-        static let small: CGFloat = 8
-        static let medium: CGFloat = 12
-        static let large: CGFloat = 16
-        static let extraLarge: CGFloat = 24
-        static let round: CGFloat = 50
+    public struct CornerRadius {
+        public static let small: CGFloat = 8
+        public static let medium: CGFloat = 12
+        public static let large: CGFloat = 16
+        public static let extraLarge: CGFloat = 24
+        public static let round: CGFloat = 50
     }
     
     // MARK: - Shadow
-    struct Shadow {
-        static let small = ShadowStyle(
+    public struct Shadow {
+        public static let small = ShadowStyle(
             color: UIColor.black,
             opacity: 0.1,
             offset: CGSize(width: 0, height: 2),
             radius: 4
         )
         
-        static let medium = ShadowStyle(
+        public static let medium = ShadowStyle(
             color: UIColor.black,
             opacity: 0.15,
             offset: CGSize(width: 0, height: 4),
             radius: 8
         )
         
-        static let large = ShadowStyle(
+        public static let large = ShadowStyle(
             color: UIColor.black,
             opacity: 0.2,
             offset: CGSize(width: 0, height: 8),
@@ -416,16 +462,23 @@ struct DesignSystem {
         )
     }
     
-    struct ShadowStyle {
-        let color: UIColor
-        let opacity: Float
-        let offset: CGSize
-        let radius: CGFloat
+    public struct ShadowStyle {
+        public let color: UIColor
+        public let opacity: Float
+        public let offset: CGSize
+        public let radius: CGFloat
+        
+        public init(color: UIColor, opacity: Float, offset: CGSize, radius: CGFloat) {
+            self.color = color
+            self.opacity = opacity
+            self.offset = offset
+            self.radius = radius
+        }
     }
     
     // MARK: - Pet Type Colors
-    struct PetColors {
-        static func colorForPetType(_ petType: PetType) -> UIColor {
+    public struct PetColors {
+        public static func colorForPetType(_ petType: PetType) -> UIColor {
             switch petType {
             case .dog:
                 return Colors.accent1 // Altın sarısı
@@ -444,15 +497,15 @@ struct DesignSystem {
             }
         }
         
-        static func lightColorForPetType(_ petType: PetType) -> UIColor {
+        public static func lightColorForPetType(_ petType: PetType) -> UIColor {
             return colorForPetType(petType).withAlphaComponent(0.15)
         }
     }
     
     // MARK: - Icons
-    struct Icons {
+    public struct Icons {
         // Pet Type Icons
-        static func iconForPetType(_ petType: PetType) -> String {
+        public static func iconForPetType(_ petType: PetType) -> String {
             switch petType {
             case .dog:
                 return "pawprint.fill"
@@ -472,7 +525,7 @@ struct DesignSystem {
         }
         
         // Health Record Icons
-        static func iconForHealthRecord(_ recordType: HealthRecordType) -> String {
+        public static func iconForHealthRecord(_ recordType: HealthRecordType) -> String {
             switch recordType {
             case .checkup:
                 return "stethoscope"
@@ -496,7 +549,7 @@ struct DesignSystem {
 }
 
 // MARK: - UIView Extensions
-extension UIView {
+public extension UIView {
     func applyShadow(_ shadow: DesignSystem.ShadowStyle) {
         layer.shadowColor = shadow.color.cgColor
         layer.shadowOpacity = shadow.opacity
@@ -527,7 +580,7 @@ extension UIView {
 }
 
 // MARK: - UIButton Extensions
-extension UIButton {
+public extension UIButton {
     func applyPrimaryStyle() {
         backgroundColor = DesignSystem.Colors.primary
         setTitleColor(DesignSystem.Colors.textLight, for: .normal)
@@ -574,7 +627,7 @@ extension UIButton {
 }
 
 // MARK: - UILabel Extensions
-extension UILabel {
+public extension UILabel {
     func applyTitleStyle() {
         font = DesignSystem.Typography.title2
         textColor = DesignSystem.Colors.textPrimary
@@ -602,8 +655,8 @@ extension UILabel {
 }
 
 // MARK: - Cute Animations
-struct CuteAnimations {
-    static func bounceAnimation(for view: UIView, completion: (() -> Void)? = nil) {
+public struct CuteAnimations {
+    public static func bounceAnimation(for view: UIView, completion: (() -> Void)? = nil) {
         view.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.8, options: [.allowUserInteraction], animations: {
             view.transform = .identity
@@ -612,7 +665,7 @@ struct CuteAnimations {
         })
     }
     
-    static func wiggleAnimation(for view: UIView) {
+    public static func wiggleAnimation(for view: UIView) {
         let animation = CAKeyframeAnimation(keyPath: "transform.rotation.z")
         animation.values = [0, -0.1, 0.1, -0.1, 0.1, 0]
         animation.duration = 0.5
@@ -620,13 +673,13 @@ struct CuteAnimations {
         view.layer.add(animation, forKey: "wiggle")
     }
     
-    static func pulseAnimation(for view: UIView) {
+    public static func pulseAnimation(for view: UIView) {
         UIView.animate(withDuration: 0.6, delay: 0, options: [.repeat, .autoreverse, .allowUserInteraction], animations: {
             view.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
         }, completion: nil)
     }
     
-    static func slideInFromBottom(for view: UIView, delay: TimeInterval = 0) {
+    public static func slideInFromBottom(for view: UIView, delay: TimeInterval = 0) {
         view.transform = CGAffineTransform(translationX: 0, y: 50)
         view.alpha = 0
         

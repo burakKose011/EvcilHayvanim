@@ -78,44 +78,6 @@ public class SplashViewController: UIViewController {
             print("ImageView constraints set - simple full screen")
         }
         
-        // Ana başlık label'ı ekle
-        let titleLabel = UILabel()
-        titleLabel.text = "pet yanında"
-        titleLabel.textColor = .white
-        titleLabel.font = UIFont.systemFont(ofSize: 40, weight: .heavy)  // Daha büyük
-        titleLabel.textAlignment = .center
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.shadowColor = .black
-        titleLabel.shadowOffset = CGSize(width: 4, height: 4)  // Daha belirgin gölge
-        titleLabel.alpha = 1.0
-        
-        view.addSubview(titleLabel)
-        
-        // Başlığı üst kısma yerleştir - VIEW SINIRLARINI KULLAN
-        NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 100)  // View sınırlarını kullan
-        ])
-        
-        // Alt bilgi label'ı ekle
-        let subtitleLabel = UILabel()
-        subtitleLabel.text = "EvcilHayvanim Uygulaması"
-        subtitleLabel.textColor = .white
-        subtitleLabel.font = UIFont.systemFont(ofSize: 22, weight: .semibold)  // Daha büyük
-        subtitleLabel.textAlignment = .center
-        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        subtitleLabel.shadowColor = .black
-        subtitleLabel.shadowOffset = CGSize(width: 3, height: 3)
-        subtitleLabel.alpha = 1.0
-        
-        view.addSubview(subtitleLabel)
-        
-        // Alt bilgiyi alt kısma yerleştir - VIEW SINIRLARINI KULLAN
-        NSLayoutConstraint.activate([
-            subtitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            subtitleLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80)  // View sınırlarını kullan
-        ])
-        
         print("SplashViewController setupUI completed")
     }
     
